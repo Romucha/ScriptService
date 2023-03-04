@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.API", "ScriptService\ScriptService.API.csproj", "{64D13420-078D-428D-AADC-561C55E00F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.Models", "ScriptService.Models\ScriptService.Models.csproj", "{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64D13420-078D-428D-AADC-561C55E00F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64D13420-078D-428D-AADC-561C55E00F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64D13420-078D-428D-AADC-561C55E00F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64D13420-078D-428D-AADC-561C55E00F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42FC6988-7F0A-43DB-BFE4-B2300A237EA2}
+	EndGlobalSection
+EndGlobal
