@@ -1,8 +1,3 @@
 {
-  "dependencies": {
-    "postgresql1": {
-      "type": "postgresql",
-      "connectionId": "ConnectionStrings:Dev"
-    }
-  }
+  "dependencies": {}
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ScriptService.DataManagement;
 
 namespace ScriptService.API.Controllers
 {
@@ -9,15 +11,18 @@ namespace ScriptService.API.Controllers
 	{
 		private readonly ILogger<ScriptsController> _logger;
 
-		public ScriptsController(ILogger<ScriptsController> logger) 
+		private readonly ScriptDbContext _dbContext;
+
+		public ScriptsController(ILogger<ScriptsController> logger, ScriptDbContext scriptDbContext) 
 		{
 			_logger = logger;
+			_dbContext = scriptDbContext;
 		}
 
 		[HttpGet]
 		public ActionResult Get(string? filter = null)
 		{
-			return Ok();
+			return Ok(_dbContext.Scripts);
 		}
 
 		[HttpPost]

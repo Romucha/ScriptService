@@ -11,11 +11,16 @@ namespace ScriptService.DataManagement
 {
 	public class ScriptDbContext : DbContext
 	{
+		private readonly IConfiguration configuration;
+
+		private readonly DbContextOptions<ScriptDbContext> dbContextOptions;
+
 		public DbSet<Script> Scripts { get; set; }
 
-		public ScriptDbContext()
+		public ScriptDbContext(IConfiguration configuration, DbContextOptions<ScriptDbContext> dbContextOptions) : base(dbContextOptions)
 		{
-
+			this.configuration = configuration;
+			this.dbContextOptions = dbContextOptions;
 		}
 
 		protected override void OnModelCreating(ModelBuilder builder) 

@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.API", "Script
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.Models", "ScriptService.Models\ScriptService.Models.csproj", "{DFC0756E-0E53-4222-A4A1-2DCA8472FEBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.DataManagement", "ScriptService.DataManagement\ScriptService.DataManagement.csproj", "{96F4D810-8049-49B7-ACB7-BAEB1E316146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.DataManagement", "ScriptService.DataManagement\ScriptService.DataManagement.csproj", "{96F4D810-8049-49B7-ACB7-BAEB1E316146}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{96F4D810-8049-49B7-ACB7-BAEB1E316146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96F4D810-8049-49B7-ACB7-BAEB1E316146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96F4D810-8049-49B7-ACB7-BAEB1E316146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
