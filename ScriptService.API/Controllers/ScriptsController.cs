@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScriptService.DataManagement;
+using ScriptService.Models;
 
 namespace ScriptService.API.Controllers
 {
@@ -22,28 +23,56 @@ namespace ScriptService.API.Controllers
 		[HttpGet]
 		public ActionResult Get(string? filter = null)
 		{
-			return Ok(_dbContext.Scripts);
+			var scripts = _dbContext.Scripts;
+			if (filter != null)
+			{
+				return Ok(scripts.Where(c => c.GetType()
+				.GetProperties()
+				.Any(x => x.GetValue(c, null).ToString().ToLower().Contains(filter.ToLower()))));
+			}
+			return Ok(scripts);
 		}
 
 		[HttpPost]
-		[Authorize]
-		public ActionResult Post(string? filter = null)
+		public ActionResult Post(Script script)
 		{
-			return Ok();
+			if (script != null)
+			{
+				_dbContext.Scripts.Add(script);
+				_dbContext.SaveChanges();
+				return Ok(script);
+			}
+			return BadRequest();
 		}
 
 		[HttpDelete]
-		[Authorize]
-		public ActionResult Delete(string? filter = null)
+		public ActionResult Delete(int? id)
 		{
-			return Ok();
+			var script = _dbContext.Scripts.FirstOrDefault(c=>c.Id == id);
+			if (script != null)
+			{
+				_dbContext.Scripts.Remove(script);
+				_dbContext.SaveChanges();
+				return Ok(script);
+			}
+			return NotFound();
 		}
 
 		[HttpPut]
-		[Authorize]
-		public ActionResult Put(string? filter = null)
+		public ActionResult Put(Script script)
 		{
-			return Ok();
+			if (script != null)
+			{
+				var dbscript = _dbContext.Scripts.FirstOrDefault(c => c.Id == script.Id);
+				if (dbscript != null)
+				{
+					//broken
+					_dbContext.Update(script);
+					_dbContext.SaveChanges();
+					return Ok(script);
+				}
+			}
+			return NotFound();
 		}
 	}
 }
