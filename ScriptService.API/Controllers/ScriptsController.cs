@@ -26,21 +26,37 @@ namespace ScriptService.API.Controllers
 			var scripts = _dbContext.Scripts;
 			if (filter != null)
 			{
-				return Ok(scripts.Where(c => c.GetType()
-				.GetProperties()
-				.Any(x => x.GetValue(c, null).ToString().ToLower().Contains(filter.ToLower()))));
+				filter = filter.ToLower();
+				return Ok(scripts.Where(c => c.Content.ToLower().Contains(filter) 
+					|| c.Name.ToLower().Contains(filter)
+					|| c.UpdatedAt.ToString().ToLower().Contains(filter)
+					|| c.CreatedAt.ToString().ToLower().Contains(filter)));
 			}
 			return Ok(scripts);
+		}
+
+		[HttpGet("{id:int}")]
+		public ActionResult GetById(int id)
+		{
+			var script = _dbContext.Scripts.FirstOrDefault(x => x.Id == id);
+			if (script != null)
+			{
+				return Ok(script);
+			}
+			return NotFound();
 		}
 
 		[HttpPost]
 		public ActionResult Post(Script script)
 		{
-			if (script != null)
+			if (ModelState.IsValid)
 			{
-				_dbContext.Scripts.Add(script);
-				_dbContext.SaveChanges();
-				return Ok(script);
+				if (script != null)
+				{
+					_dbContext.Scripts.Add(script);
+					_dbContext.SaveChanges();
+					return Ok(script);
+				}
 			}
 			return BadRequest();
 		}
@@ -61,18 +77,25 @@ namespace ScriptService.API.Controllers
 		[HttpPut]
 		public ActionResult Put(Script script)
 		{
-			if (script != null)
+			if (ModelState.IsValid)
 			{
-				var dbscript = _dbContext.Scripts.FirstOrDefault(c => c.Id == script.Id);
-				if (dbscript != null)
+				if (script != null)
 				{
-					//broken
-					_dbContext.Update(script);
-					_dbContext.SaveChanges();
-					return Ok(script);
+					var dbscript = _dbContext.Scripts.FirstOrDefault(c => c.Name == script.Name);
+					if (dbscript != null)
+					{
+						dbscript.Content = script.Content;
+						dbscript.Type = script.Type;
+						dbscript.UpdatedAt = DateTime.UtcNow;
+						//broken
+						_dbContext.Update(dbscript);
+						_dbContext.SaveChanges();
+						return Ok(dbscript);
+					}
 				}
+				return NotFound();
 			}
-			return NotFound();
+			return BadRequest();
 		}
 	}
 }
