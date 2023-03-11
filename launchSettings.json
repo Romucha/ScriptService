@@ -3,8 +3,14 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "scriptservice.app",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
-        "scriptservice.api": "StartDebugging"
+        "scriptservice.api": "StartDebugging",
+        "pgadmin": "StartWithoutDebugging",
+        "postgres": "StartWithoutDebugging",
+        "scriptservice.app": "StartDebugging"
       }
     }
   }

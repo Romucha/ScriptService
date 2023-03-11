@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: ScriptService.API/Dockerfile
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -21,6 +22,15 @@ services:
       - postgres
     restart: unless-stopped
   
+  scriptservice.app:
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: ScriptService.App/Dockerfile
+    restart: unless-stopped
+
+
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
