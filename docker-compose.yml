@@ -3,6 +3,9 @@ version: '3.4'
 services:
   scriptservice.api:
     image: ${DOCKER_REGISTRY-}scriptserviceapi
+    ports:
+      - "8082:80"
+      - "8081:443"
     build:
       context: .
       dockerfile: ScriptService.API/Dockerfile
