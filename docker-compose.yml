@@ -23,6 +23,7 @@ services:
     restart: unless-stopped
   
   scriptservice.app:
+    image: ${DOCKER_REGISTRY-}scriptserviceapp
     ports:
       - "8080:80"
     build:
