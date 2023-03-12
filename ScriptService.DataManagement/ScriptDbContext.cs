@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ScriptService.Models;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ScriptService.DataManagement
 {
-	public class ScriptDbContext : DbContext
+	public class ScriptDbContext : IdentityDbContext
 	{
 		private readonly IConfiguration configuration;
 
@@ -25,6 +26,7 @@ namespace ScriptService.DataManagement
 
 		protected override void OnModelCreating(ModelBuilder builder) 
 		{ 
+			base.OnModelCreating(builder);
 			builder.HasPostgresEnum<ScriptType>();
 		}
 	}

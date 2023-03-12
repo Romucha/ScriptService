@@ -21,9 +21,9 @@ namespace ScriptService.API.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Get(string? filter = null)
+		public async Task<IActionResult> Get(string? filter = null)
 		{
-			var scripts = _dbContext.Scripts;
+			var scripts = await _dbContext.Scripts.ToListAsync();
 			if (filter != null)
 			{
 				filter = filter.ToLower();
@@ -36,9 +36,9 @@ namespace ScriptService.API.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		public ActionResult GetById(int id)
+		public async Task<IActionResult> GetById(int id)
 		{
-			var script = _dbContext.Scripts.FirstOrDefault(x => x.Id == id);
+			var script = await _dbContext.Scripts.FirstOrDefaultAsync(x => x.Id == id);
 			if (script != null)
 			{
 				return Ok(script);
@@ -47,13 +47,13 @@ namespace ScriptService.API.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Post(Script script)
+		public async Task<IActionResult> Post(Script script)
 		{
 			if (ModelState.IsValid)
 			{
 				if (script != null)
 				{
-					_dbContext.Scripts.Add(script);
+					await _dbContext.Scripts.AddAsync(script);
 					_dbContext.SaveChanges();
 					return Ok(script);
 				}
@@ -62,9 +62,9 @@ namespace ScriptService.API.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
-			var script = _dbContext.Scripts.FirstOrDefault(c=>c.Id == id);
+			var script = await _dbContext.Scripts.FirstOrDefaultAsync(c => c.Id == id);
 			if (script != null)
 			{
 				_dbContext.Scripts.Remove(script);
@@ -75,13 +75,13 @@ namespace ScriptService.API.Controllers
 		}
 
 		[HttpPut]
-		public ActionResult Put(Script script)
+		public async Task<IActionResult> Put(Script script)
 		{
 			if (ModelState.IsValid)
 			{
 				if (script != null)
 				{
-					var dbscript = _dbContext.Scripts.FirstOrDefault(c => c.Name == script.Name);
+					var dbscript = await _dbContext.Scripts.FirstOrDefaultAsync(c => c.Name == script.Name);
 					if (dbscript != null)
 					{
 						dbscript.Content = script.Content;
