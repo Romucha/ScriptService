@@ -36,9 +36,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(policy =>
 {
-				policy.AddPolicy("AllowAll", options =>
+				policy.AddPolicy("AllowScriptHeaders", options =>
 				{
-								options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+								options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
 				});
 });
 
@@ -84,7 +84,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors();
+app.UseCors("AllowScriptHeaders");
 using (var scope = app.Services.CreateScope())
 {
 	((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
