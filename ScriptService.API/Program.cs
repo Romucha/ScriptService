@@ -8,10 +8,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<ScriptDbContext>(options =>
 {
 	string connString = string.Empty;
@@ -36,6 +33,14 @@ builder.Services.AddDbContext<ScriptDbContext>(options =>
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(policy =>
+{
+				policy.AddPolicy("AllowAll", options =>
+				{
+								options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+				});
+});
 
 builder.Services.AddIdentityCore<ScriptUser>(u =>
 {
@@ -78,6 +83,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors();
 using (var scope = app.Services.CreateScope())
 {
 	((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
