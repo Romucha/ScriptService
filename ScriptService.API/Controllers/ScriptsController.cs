@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScriptService.DataManagement;
-using ScriptService.Models;
+using ScriptService.Models.Data;
 
 namespace ScriptService.API.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("/api/{controller}")]
 	public class ScriptsController : Controller
 	{

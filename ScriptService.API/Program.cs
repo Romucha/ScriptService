@@ -4,11 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Writers;
 using ScriptService.DataManagement;
+using ScriptService.DataManagement.Mapping;
+using ScriptService.Models.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+//Database
 builder.Services.AddDbContext<ScriptDbContext>(options =>
 {
 	string connString = string.Empty;
@@ -31,9 +34,15 @@ builder.Services.AddDbContext<ScriptDbContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
 });
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+builder.Services.AddAutoMapper(typeof(MapperInitializer));
+
+//swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//CORS
 builder.Services.AddCors(policy =>
 {
 				policy.AddPolicy("AllowScriptHeaders", options =>

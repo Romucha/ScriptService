@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ScriptService.Models;
+using ScriptService.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ScriptService.DataManagement
 {
-	public class ScriptDbContext : IdentityDbContext
+    public class ScriptDbContext : IdentityDbContext
 	{
 		private readonly IConfiguration configuration;
 

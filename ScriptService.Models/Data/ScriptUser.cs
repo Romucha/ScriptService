@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptService.DataManagement
+namespace ScriptService.Models.Data
 {
-	public class ScriptUser : IdentityUser
-	{
-	}
+    public class ScriptUser : IdentityUser
+    {
+    }
 }

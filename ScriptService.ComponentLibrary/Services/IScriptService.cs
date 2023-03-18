@@ -1,4 +1,4 @@
-﻿using ScriptService.Models;
+﻿using ScriptService.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScriptService.ComponentLibrary.Services
 {
-	public interface IScriptManagementService
+    public interface IScriptManagementService
 	{
 		Task<IEnumerable<Script>> GetAllScriptsAsync(string filter = null);
 

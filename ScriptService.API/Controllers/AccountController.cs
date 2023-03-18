@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ScriptService.DataManagement;
+using ScriptService.Models.Data;
 using ScriptService.Models.DTO;
+using ScriptService.Models.DTO.User;
 
 namespace ScriptService.API.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class AccountController : ControllerBase
 	{
@@ -22,7 +23,7 @@ namespace ScriptService.API.Controllers
 
         [HttpPost]
 		[Route(nameof(Register))]
-		public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+		public async Task<IActionResult> Register([FromBody] LoginUserDTO userDTO)
 		{
 			return Ok();
 		}

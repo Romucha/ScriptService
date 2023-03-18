@@ -1,4 +1,4 @@
-﻿using ScriptService.Models;
+﻿using ScriptService.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScriptService.ComponentLibrary.Services
 {
-	public class ScriptManagementService : IScriptManagementService
+    public class ScriptManagementService : IScriptManagementService
 	{
 		private HttpClient _httpClient;
 		public ScriptManagementService(HttpClient httpClient)

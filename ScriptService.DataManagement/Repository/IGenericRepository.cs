@@ -1,4 +1,4 @@
-﻿using ScriptService.Models;
+﻿using ScriptService.Models.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace ScriptService.DataManagement.Repository
 {
-	public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
 	{
 		Task<IPagedList<T>> GetAll(
 			RequestParams requestParams,
