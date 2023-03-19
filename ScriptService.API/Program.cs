@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Writers;
 using ScriptService.DataManagement;
 using ScriptService.DataManagement.Mapping;
+using ScriptService.DataManagement.Repository;
 using ScriptService.Models.Data;
 using System.Text;
 
@@ -34,6 +35,7 @@ builder.Services.AddDbContext<ScriptDbContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
 });
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(MapperInitializer));
 
