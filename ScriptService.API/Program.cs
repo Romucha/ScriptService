@@ -57,24 +57,8 @@ builder.Services.AddCors(policy =>
 //identity core
 builder.Services.ConfigureIdentity();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
- .AddJwtBearer(options =>
- {
-     options.TokenValidationParameters = new TokenValidationParameters()
-     {
-         ValidateIssuer = true,
-         ValidateAudience = true,
-         ValidateLifetime = true,
-         ValidateIssuerSigningKey = true,
-         ValidAudience = builder.Configuration.GetSection("Jwt").GetSection("ValidAudience").Value,
-         ValidIssuer = builder.Configuration.GetSection("Jwt").GetSection("ValidIssuer").Value,
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt").GetSection("IssuerSigningKey").Value))
-     };
- });
+//authentication and jwt
+builder.Services.ConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
