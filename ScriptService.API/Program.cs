@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Writers;
+using ScriptService.API.Extensions;
 using ScriptService.DataManagement;
 using ScriptService.DataManagement.Mapping;
 using ScriptService.DataManagement.Repository;
@@ -15,24 +16,24 @@ builder.Services.AddControllers();
 //Database
 builder.Services.AddDbContext<ScriptDbContext>(options =>
 {
-	string connString = string.Empty;
-	if (builder.Environment.IsDevelopment())
-	{
-		connString = "Dev";
-	}
-	else if (builder.Environment.IsProduction())
-	{
-		connString = "Prod";
-	}
-	else if (builder.Environment.IsStaging())
-	{
-		connString = "Stage";
-	}
-	else
-	{
-		connString = "Default";
-	}
-	options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
+    string connString = string.Empty;
+    if (builder.Environment.IsDevelopment())
+    {
+        connString = "Dev";
+    }
+    else if (builder.Environment.IsProduction())
+    {
+        connString = "Prod";
+    }
+    else if (builder.Environment.IsStaging())
+    {
+        connString = "Stage";
+    }
+    else
+    {
+        connString = "Default";
+    }
+    options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
 });
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -47,45 +48,40 @@ builder.Services.AddSwaggerGen();
 //CORS
 builder.Services.AddCors(policy =>
 {
-				policy.AddPolicy("AllowScriptHeaders", options =>
-				{
-								options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
-				});
+    policy.AddPolicy("AllowScriptHeaders", options =>
+    {
+        options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
+    });
 });
 
-builder.Services.AddIdentityCore<ScriptUser>(u =>
-{
-	u.User.RequireUniqueEmail = true;
-})
-	.AddRoles<IdentityRole>()
-	.AddEntityFrameworkStores<ScriptDbContext>()
-	.AddDefaultTokenProviders();
+//identity core
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-	.AddJwtBearer(options => 
-	{
-		options.TokenValidationParameters = new TokenValidationParameters()
-		{
-			ValidateIssuer = true,
-			ValidateAudience = true,
-			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true,
-			ValidAudience = builder.Configuration.GetSection("Jwt").GetSection("ValidAudience").Value,
-			ValidIssuer = builder.Configuration.GetSection("Jwt").GetSection("ValidIssuer").Value,
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt").GetSection("IssuerSigningKey").Value))
-		};
-	});
+ .AddJwtBearer(options =>
+ {
+     options.TokenValidationParameters = new TokenValidationParameters()
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidateLifetime = true,
+         ValidateIssuerSigningKey = true,
+         ValidAudience = builder.Configuration.GetSection("Jwt").GetSection("ValidAudience").Value,
+         ValidIssuer = builder.Configuration.GetSection("Jwt").GetSection("ValidIssuer").Value,
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt").GetSection("IssuerSigningKey").Value))
+     };
+ });
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -98,7 +94,7 @@ app.MapControllers();
 app.UseCors("AllowScriptHeaders");
 using (var scope = app.Services.CreateScope())
 {
-	((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
+    ((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
 }
 
 app.Run();
