@@ -19,11 +19,12 @@ namespace ScriptService.API.Controllers
         private readonly IAuthManager _authManager;
         private readonly IMapper _mapper;
 
-        public AccountController(UserManager<ScriptUser> userManager, ILogger<AccountController> logger, IAuthManager authManager)
+        public AccountController(UserManager<ScriptUser> userManager, ILogger<AccountController> logger, IAuthManager authManager, IMapper mapper)
         {
             _userManager = userManager;
             _logger = logger;
             _authManager = authManager;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -40,7 +41,7 @@ namespace ScriptService.API.Controllers
                 var user = _mapper.Map<ScriptUser>(userDTO);
                 user.UserName = user.Email;
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, userDTO.Password);
                 if (!result.Succeeded)
                 {
                     foreach (var error in result.Errors)

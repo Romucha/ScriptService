@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ScriptService.DataManagement
 {
-    public class ScriptDbContext : IdentityDbContext
+    public class ScriptDbContext : IdentityDbContext<ScriptUser>
     {
         private readonly IConfiguration configuration;
 

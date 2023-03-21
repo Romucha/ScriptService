@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Writers;
 using ScriptService.API.Extensions;
+using ScriptService.API.Services;
 using ScriptService.DataManagement;
 using ScriptService.DataManagement.Mapping;
 using ScriptService.DataManagement.Repository;
@@ -59,6 +60,7 @@ builder.Services.ConfigureIdentity();
 
 //authentication and jwt
 builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
