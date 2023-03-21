@@ -11,5 +11,7 @@ namespace ScriptService.Models.DTO.User
     {
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
+
+        public ICollection<string> Roles { get; set; }
     }
 }
