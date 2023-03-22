@@ -3,9 +3,13 @@ version: '3.4'
 services:
   scriptservice.api:
     image: ${DOCKER_REGISTRY-}scriptserviceapi
+    ports:
+      - "8082:80"
+      - "8081:443"
     build:
       context: .
       dockerfile: ScriptService.API/Dockerfile
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -21,6 +25,16 @@ services:
       - postgres
     restart: unless-stopped
   
+  scriptservice.app:
+    image: ${DOCKER_REGISTRY-}scriptserviceapp
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: ScriptService.App/Dockerfile
+    restart: unless-stopped
+
+
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4

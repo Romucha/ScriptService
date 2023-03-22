@@ -1,101 +1,141 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScriptService.DataManagement;
-using ScriptService.Models;
+using ScriptService.DataManagement.Repository;
+using ScriptService.Models.Data;
+using ScriptService.Models.DTO.Script;
+using ScriptService.Models.Paging;
+using System.Xml.Linq;
 
 namespace ScriptService.API.Controllers
 {
-	[ApiController]
-	[Route("/api/{controller}")]
-	public class ScriptsController : Controller
-	{
-		private readonly ILogger<ScriptsController> _logger;
+    [ApiController]
+    [Authorize]
+    [Route("/api/{controller}")]
+    public class ScriptsController : Controller
+    {
+        private readonly ILogger<ScriptsController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-		private readonly ScriptDbContext _dbContext;
+        public ScriptsController(ILogger<ScriptsController> logger, IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _logger = logger;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
-		public ScriptsController(ILogger<ScriptsController> logger, ScriptDbContext scriptDbContext) 
-		{
-			_logger = logger;
-			_dbContext = scriptDbContext;
-		}
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string? filter = null)
+        {
+            var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
+            true 
+            : 
+            x.Content.ToLower().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0
+            || x.Name.ToLower().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0
+            || x.UpdatedAt.ToString().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0
+            || x.CreatedAt.ToString().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0);
+            var result = _mapper.Map<IList<GetScriptDTO>>(scripts);
+            return Ok(result);
+        }
 
-		[HttpGet]
-		public ActionResult Get(string? filter = null)
-		{
-			var scripts = _dbContext.Scripts;
-			if (filter != null)
-			{
-				filter = filter.ToLower();
-				return Ok(scripts.Where(c => c.Content.ToLower().Contains(filter) 
-					|| c.Name.ToLower().Contains(filter)
-					|| c.UpdatedAt.ToString().ToLower().Contains(filter)
-					|| c.CreatedAt.ToString().ToLower().Contains(filter)));
-			}
-			return Ok(scripts);
-		}
+        [HttpGet("{id:int}", Name = nameof(GetById))]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+            var result = _mapper.Map<GetScriptDTO>(script);
 
-		[HttpGet("{id:int}")]
-		public ActionResult GetById(int id)
-		{
-			var script = _dbContext.Scripts.FirstOrDefault(x => x.Id == id);
-			if (script != null)
-			{
-				return Ok(script);
-			}
-			return NotFound();
-		}
+            return Ok(result);
+        }
 
-		[HttpPost]
-		public ActionResult Post(Script script)
-		{
-			if (ModelState.IsValid)
-			{
-				if (script != null)
-				{
-					_dbContext.Scripts.Add(script);
-					_dbContext.SaveChanges();
-					return Ok(script);
-				}
-			}
-			return BadRequest();
-		}
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Post([FromBody] CreateScriptDTO createScriptDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var script = _mapper.Map<Script>(createScriptDTO);
+                await _unitOfWork.Scripts.Insert(script);
+                await _unitOfWork.Save();
+                return CreatedAtRoute(nameof(GetById), new { id = script.Id }, script);
+            }
+            else
+            {
+                _logger.LogError($"Invalid post attempt in {nameof(Post)}");
+                return BadRequest(ModelState);
+            }
+        }
 
-		[HttpDelete]
-		public ActionResult Delete(int? id)
-		{
-			var script = _dbContext.Scripts.FirstOrDefault(c=>c.Id == id);
-			if (script != null)
-			{
-				_dbContext.Scripts.Remove(script);
-				_dbContext.SaveChanges();
-				return Ok(script);
-			}
-			return NotFound();
-		}
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (ModelState.IsValid && id > 0) 
+            {
+                var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+                if (script == null)
+                {
+                    _logger.LogError($"script with id {id} does not exist");
+                    return NotFound(id);
+                }
+                else
+                {
+                    await _unitOfWork.Scripts.Delete(id);
+                    await _unitOfWork.Save();
 
-		[HttpPut]
-		public ActionResult Put(Script script)
-		{
-			if (ModelState.IsValid)
-			{
-				if (script != null)
-				{
-					var dbscript = _dbContext.Scripts.FirstOrDefault(c => c.Name == script.Name);
-					if (dbscript != null)
-					{
-						dbscript.Content = script.Content;
-						dbscript.Type = script.Type;
-						dbscript.UpdatedAt = DateTime.UtcNow;
-						//broken
-						_dbContext.Update(dbscript);
-						_dbContext.SaveChanges();
-						return Ok(dbscript);
-					}
-				}
-				return NotFound();
-			}
-			return BadRequest();
-		}
-	}
+                    return NoContent();
+                }
+            }
+            else
+            {
+                _logger.LogError($"Invalid delete attempt in {nameof(Delete)}");
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Put(int id, [FromBody]UpdateScriptDTO updateScriptDTO)
+        {
+            if (ModelState.IsValid && id > 0)
+            {
+                var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+                if (script == null)
+                {
+                    _logger.LogError($"script with id {id} does not exist");
+                    return NotFound(id);
+                }
+                else
+                {
+                    _mapper.Map(updateScriptDTO, script);
+                    _unitOfWork.Scripts.Update(script);
+                    await _unitOfWork.Save();
+
+                    return NoContent();
+                }
+            }
+            else
+            {
+                _logger.LogError($"Invalid put attempt in {nameof(Put)}");
+                return BadRequest(ModelState);
+            }
+        }
+    }
 }
