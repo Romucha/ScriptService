@@ -53,6 +53,10 @@ builder.Services.AddCors(policy =>
     {
         options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
     });
+    policy.AddDefaultPolicy(options =>
+    {
+        options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
 });
 
 //identity core
@@ -77,7 +81,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("AllowScriptHeaders");
+app.UseCors();
 using (var scope = app.Services.CreateScope())
 {
     ((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();

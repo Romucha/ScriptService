@@ -87,14 +87,5 @@ namespace ScriptService.API.Controllers
                 return Problem(error);
             }
         }
-
-        [Authorize]
-        [HttpPost]
-        [Route(nameof(Logout))]
-        public async Task<IActionResult> Logout()
-        {
-            //TBD
-            return Ok();
-        }
     }
 }
