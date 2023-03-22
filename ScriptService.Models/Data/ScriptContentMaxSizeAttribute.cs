@@ -24,7 +24,7 @@ namespace ScriptService.Models.Data
             }
             string input = value.ToString();
             var bytes = Encoding.UTF8.GetBytes(input);
-            return bytes.Length / 1000.0 > _maxSize;
+            return bytes.Length / 1000.0 <= _maxSize;
         }
     }
 }

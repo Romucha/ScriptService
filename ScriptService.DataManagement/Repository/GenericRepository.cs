@@ -60,24 +60,33 @@ namespace ScriptService.DataManagement.Repository
             return await query.AsNoTracking().ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
         }
 
-        public Task<T> GetById(int id, Expression<Func<T, bool>> expression = null, List<string> includes = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression = null, List<string> includes = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _dbSet;
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+            return await query.AsNoTracking().FirstOrDefaultAsync<T>(expression);
         }
 
-        public Task Insert(T entity)
+        public async Task Insert(T entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
         }
 
-        public Task InsertRange(IEnumerable<T> entities)
+        public async Task InsertRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddRangeAsync(entities);
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }
