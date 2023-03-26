@@ -11,9 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.DataManagemen
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9A6E3F28-5EA8-47E5-AA11-4292C0B6566D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.App", "ScriptService.App\ScriptService.App.csproj", "{39C17D63-62D7-4C19-8C55-33AEBDE4B41F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.App", "ScriptService.App\ScriptService.App.csproj", "{39C17D63-62D7-4C19-8C55-33AEBDE4B41F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.ComponentLibrary", "ScriptService.ComponentLibrary\ScriptService.ComponentLibrary.csproj", "{7D2D8879-8DDA-4BB9-90D9-13BE44576136}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.ComponentLibrary", "ScriptService.ComponentLibrary\ScriptService.ComponentLibrary.csproj", "{7D2D8879-8DDA-4BB9-90D9-13BE44576136}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleK8s", "SimpleK8s", "{695C07DD-E17B-4506-B5CC-D3F3EB0A73D3}"
+	ProjectSection(SolutionItems) = preProject
+		client-pod.yaml = client-pod.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
