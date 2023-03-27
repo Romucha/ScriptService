@@ -17,6 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.ComponentLibr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleK8s", "SimpleK8s", "{695C07DD-E17B-4506-B5CC-D3F3EB0A73D3}"
 	ProjectSection(SolutionItems) = preProject
+		client-deployment.yaml = client-deployment.yaml
 		client-node-port.yaml = client-node-port.yaml
 		client-pod.yaml = client-pod.yaml
 	EndProjectSection
