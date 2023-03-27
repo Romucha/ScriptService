@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      name: client-pod
+      labels: 
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: romucha/scriptserviceapp
+          ports:
+            - containerPort: 80
+
