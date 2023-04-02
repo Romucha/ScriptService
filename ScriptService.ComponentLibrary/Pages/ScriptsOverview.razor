@@ -1,6 +1,18 @@
 ﻿@page "/scripts"
 
-<h3>ScriptsOverview</h3>
+<MudText>Scripts</MudText>
+<MudPaper Width="300px">
+    <MudList Clickable="true">
+        @if (Scripts != null)
+        {
+            @foreach (var script in Scripts)
+            {
+                <MudListItem Text="@($"{script.Name}.{script.Type}")" Icon="@Icons.Material.Filled.FilePresent"></MudListItem>
+                <MudDivider />
+            }
+        }
+    </MudList>
+</MudPaper>
 
 @code {
 

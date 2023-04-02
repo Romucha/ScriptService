@@ -13,6 +13,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseKestrel();
+
 builder.Services.AddControllers();
 //Database
 builder.Services.AddDbContext<ScriptDbContext>(options =>

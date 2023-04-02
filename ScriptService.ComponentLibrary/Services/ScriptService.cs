@@ -39,7 +39,8 @@ namespace ScriptService.ComponentLibrary.Services
 
         public async Task<IEnumerable<Script>> GetAllScriptsAsync(string filter = null)
         {
-            return await JsonSerializer.DeserializeAsync<IEnumerable<Script>>(await _httpClient.GetStreamAsync($"api/scripts?filter={filter}"), new JsonSerializerOptions()
+            Console.WriteLine("Meow");
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Script>>(await _httpClient.GetStreamAsync($"api/scripts"), new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             });
