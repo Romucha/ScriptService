@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ScriptService.ComponentLibrary.Pages
 {
-	public partial class ScriptsOverview
-	{
-		[Inject]
-		private IScriptManagementService _scriptManagementService { get; set; }
+    public partial class ScriptsOverview
+    {
+        [Inject]
+        private IScriptManagementService _scriptManagementService { get; set; }
 
 
-	}
+    }
 }

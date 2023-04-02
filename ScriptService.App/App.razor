@@ -1,4 +1,6 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using System.Reflection;
+@using ScriptService.ComponentLibrary.Pages;
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@LoadedAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +12,11 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code
+{
+ private List<Assembly> LoadedAssemblies = new()
+ {
+     typeof(ScriptsOverview).Assembly
+ };
+}
