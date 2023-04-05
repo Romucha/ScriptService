@@ -1,19 +1,19 @@
 ﻿@page "/scripts"
 
-<MudText>Scripts</MudText>
-<MudPaper Width="300px">
-    <MudList Clickable="true">
-        @if (Scripts != null)
-        {
+@if (Scripts == null)
+{
+    <MudImage Src="images/loading.gif" />
+}
+else
+{
+    <MudText>Scripts</MudText>
+    <MudPaper Width="300px">
+        <MudList Clickable="true">
             @foreach (var script in Scripts)
             {
                 <MudListItem Text="@($"{script.Name}.{script.Type}")" Icon="@Icons.Material.Filled.FilePresent"></MudListItem>
                 <MudDivider />
             }
-        }
-    </MudList>
-</MudPaper>
-
-@code {
-
+        </MudList>
+    </MudPaper>
 }
