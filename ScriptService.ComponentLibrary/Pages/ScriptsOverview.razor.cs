@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ScriptService.ComponentLibrary.Services;
 using ScriptService.Models.Data;
 using System;
@@ -13,12 +15,24 @@ namespace ScriptService.ComponentLibrary.Pages
     {
         [Inject]
         private IScriptManagementService _scriptManagementService { get; set; }
+								
+        [Inject]
+								private NavigationManager _navigationManager { get; set; }
 
-        public IEnumerable<Script> Scripts { get; set; } = default!;
+								[Inject]
+								private ILocalStorageService _localStorageService { get; set;	}
+
+								public IEnumerable<Script> Scripts { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
             Scripts = await _scriptManagementService.GetAllScriptsAsync();
+        }
+
+        private async void ScriptClick(Script script)
+        {
+            _navigationManager.NavigateTo($"/scripts/{script.Id}");
+												await _localStorageService.SetItemAsync<Script>("SelectedScript", script);
         }
     }
 }

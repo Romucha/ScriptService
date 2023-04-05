@@ -11,7 +11,7 @@ else
         <MudList Clickable="true">
             @foreach (var script in Scripts)
             {
-                <MudListItem Text="@($"{script.Name}.{script.Type}")" Icon="@Icons.Material.Filled.FilePresent"></MudListItem>
+                <MudListItem Text="@($"{script.Name}.{script.Type}")" Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)"></MudListItem>
                 <MudDivider />
             }
         </MudList>

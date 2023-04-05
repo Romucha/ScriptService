@@ -1,5 +1,15 @@
-﻿<h3>ScriptDetails</h3>
+﻿@page "/scripts/{Id:int}"
 
-@code {
-
+@if (_script == null)
+{
+				<MudImage Src="images/loading.gif" />
+}
+else
+{
+				<MudNavLink Href="/scripts" OnClick="ResetSelectedScript">Back</MudNavLink>
+				<MudPaper Width="300px">
+								<MudText>@($"{_script.Name}.{_script.Type}")</MudText>
+								<MudDivider />
+								<MudText>@_script.Content</MudText>
+				</MudPaper>
 }
