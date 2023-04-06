@@ -2,16 +2,18 @@
 
 @if (Scripts == null)
 {
-    <MudImage Src="images/loading.gif" />
+				<div class="d-flex justify-center">
+								<MudImage Src="images/loading.gif"/>
+				</div>
 }
 else
 {
     <MudText>Scripts</MudText>
-    <MudPaper Width="300px">
+    <MudPaper Outlined="true">
         <MudList Clickable="true">
             @foreach (var script in Scripts)
             {
-                <MudListItem Text="@($"{script.Name}.{script.Type}")" Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)"></MudListItem>
+                <MudListItem Text="@script.FullName" Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)"></MudListItem>
                 <MudDivider />
             }
         </MudList>

@@ -22,5 +22,8 @@ namespace ScriptService.Models.Data
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    }
+
+								public string FullName => $"{Name}.{Type}";
+
+				}
 }

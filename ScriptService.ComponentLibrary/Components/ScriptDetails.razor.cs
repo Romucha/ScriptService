@@ -18,9 +18,6 @@ namespace ScriptService.ComponentLibrary.Components
 								[Inject]
 								private NavigationManager _navigationManager { get; set; }
 
-								[Inject]
-								private ILocalStorageService _localStorageService { get; set; }
-
 								private Script _script { get; set; }
 
 								[ParameterAttribute]
@@ -28,12 +25,15 @@ namespace ScriptService.ComponentLibrary.Components
 
 								protected override async Task OnInitializedAsync()
 								{
-												_script = await _localStorageService.GetItemAsync<Script>("SelectedScript");
+												_script = await _scriptManagementService.GetScriptByIdAsync(Id);
 								}
 
-								private async void ResetSelectedScript()
+								private async void OnSubmit()
 								{
-												await _localStorageService.ClearAsync();
+												if (_script != null)
+												{
+																await _scriptManagementService.UpdateScriptAsync(_script);
+												}
 								}
 				}
 }

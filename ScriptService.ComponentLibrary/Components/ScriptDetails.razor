@@ -6,10 +6,16 @@
 }
 else
 {
-				<MudNavLink Href="/scripts" OnClick="ResetSelectedScript">Back</MudNavLink>
-				<MudPaper Width="300px">
-								<MudText>@($"{_script.Name}.{_script.Type}")</MudText>
-								<MudDivider />
-								<MudText>@_script.Content</MudText>
+				<MudNavLink Href="/scripts">Back to scripts</MudNavLink>
+				<MudPaper>
+								<MudForm @onsubmit="OnSubmit">
+												<MudText>@_script.FullName</MudText>
+												<MudDivider />
+												<textarea @bind-value="@_script.Content" @bind-value:event="oninput"></textarea>
+												<AuthorizeView>
+																<MudButton StartIcon="@Icons.Material.Filled.Save" Color="@Color.Primary">Save</MudButton>
+																<MudButton Href="/scripts" Color="@Color.Secondary">Cancel</MudButton>
+												</AuthorizeView>				
+								</MudForm>
 				</MudPaper>
 }
