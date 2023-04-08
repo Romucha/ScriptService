@@ -8,6 +8,6 @@ namespace ScriptService.App.Services
 
 								Task<bool> Logout();
 
-								Task<bool> Register(RegisterUserDTO);
+								Task<bool> Register(RegisterUserDTO registerUserDTO);
 				}
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using ScriptService.Models.DTO.User;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace ScriptService.App.Services
 {
@@ -10,7 +11,7 @@ namespace ScriptService.App.Services
 								private HttpClient _httpClient;
 								private ILocalStorageService _localStorageService;
 
-        public ScriptAccountService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorageService)
+        public ScriptAccountService(HttpClient httpClient, ILocalStorageService localStorageService)
         {
             _httpClient	= httpClient;
 												_localStorageService = localStorageService;
@@ -18,7 +19,8 @@ namespace ScriptService.App.Services
 
         public async Task<bool> Login(LoginUserDTO loginUserDTO)
 								{
-												var response = await _httpClient.PostAsJsonAsync<LoginUserDTO>("/api/account/login", loginUserDTO);
+												var jsonContent = JsonContent.Create(loginUserDTO);
+												var response = await _httpClient.PostAsync("/api/account/login", jsonContent);
 												if (response.IsSuccessStatusCode)
 												{
 																await _localStorageService.SetItemAsStringAsync("jwttoken", await response.Content.ReadAsStringAsync());
@@ -27,14 +29,22 @@ namespace ScriptService.App.Services
 												return false;
 								}
 
-								public Task<bool> Logout()
+								public async Task<bool> Logout()
 								{
-												throw new NotImplementedException();
+												await _localStorageService.SetItemAsStringAsync("jwttoken", null);
+												return true;
 								}
 
-								public Task<bool> Register(RegisterUserDTO registerUserDTO)
+								public async Task<bool> Register(RegisterUserDTO registerUserDTO)
 								{
-												throw new NotImplementedException();
+												var jsonContent = JsonContent.Create(registerUserDTO);
+												var response = await _httpClient.PostAsync("/api/account/register", jsonContent);
+												if (response.IsSuccessStatusCode)
+												{
+																await _localStorageService.SetItemAsStringAsync("jwttoken", await response.Content.ReadAsStringAsync());
+																return true;
+												}
+												return false;
 								}
 				}
 }

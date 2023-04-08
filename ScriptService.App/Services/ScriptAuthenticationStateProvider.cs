@@ -10,36 +10,27 @@ namespace ScriptService.App.Services
 								private IScriptAccountService _accountService;
 								private ScriptUser _currentUser;
 
-        public ScriptAuthenticationStateProvider(IScriptAccountService accountService)
-        {
+								public ScriptAuthenticationStateProvider(IScriptAccountService accountService)
+								{
 												_accountService = accountService;
-        }
+												_currentUser = new ScriptUser()
+												{
+																IsAuthenticated = false
+												};
+								}
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+								public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 								{
 												var identity = new ClaimsIdentity();
-												try
+												var userInfo = _currentUser;
+												if (userInfo != null && userInfo.IsAuthenticated)
 												{
-																var userInfo = await GetCurrentUser();
-																if (userInfo.IsAuthenticated)
-																{
-																				var claims = new[] { new Claim(ClaimTypes.Name, _currentUser.UserName) }.Concat(_currentUser.Claims.Select(c => new Claim(c.Key, c.Value)));
-																				identity = new ClaimsIdentity(claims, "Server authentication");
-																}
+																var claims = new[] { new Claim(ClaimTypes.Name, _currentUser.UserName) }.Concat(_currentUser.Claims.Select(c => new Claim(c.Key, c.Value)));
+																identity = new ClaimsIdentity(claims, "Server authentication");
 												}
-												catch (HttpRequestException ex)
-												{
-																Console.WriteLine("Request failed:" + ex.ToString());
-												}
-												return new AuthenticationState(new ClaimsPrincipal(identity));
+												return  await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
 								}
 
-								private async Task<ScriptUser> GetCurrentUser()
-								{
-												if (_currentUser != null && _currentUser.IsAuthenticated) return _currentUser;
-												_currentUser = await _accountService.CurrentUserInfo();
-												return _currentUser;
-								}
 								public async Task Logout()
 								{
 												await _accountService.Logout();
@@ -48,13 +39,31 @@ namespace ScriptService.App.Services
 								}
 								public async Task Login(LoginUserDTO loginParameters)
 								{
-												await _accountService.Login(loginParameters);
-												NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+												if (await _accountService.Login(loginParameters))
+												{
+																_currentUser = new ScriptUser()
+																{
+																				UserName = loginParameters.Email,
+																				Email = loginParameters.Email,
+																				IsAuthenticated = true,
+																				// do something with claims here
+																};
+																NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+												}
 								}
 								public async Task Register(RegisterUserDTO registerParameters)
 								{
-												await _accountService.Register(registerParameters);
-												NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+												if (await _accountService.Register(registerParameters))
+												{
+																_currentUser = new ScriptUser()
+																{
+																				UserName = registerParameters.Email,
+																				Email = registerParameters.Email,
+																				IsAuthenticated = true,
+																				// do something with claims here
+																};
+																NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+												}
 								}
 				}
 }
