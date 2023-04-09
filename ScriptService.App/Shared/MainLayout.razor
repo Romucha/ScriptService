@@ -1,5 +1,7 @@
 ﻿@using MudBlazor
+@using Components
 @inherits LayoutComponentBase
+@inject IDialogService DialogService
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
@@ -7,6 +9,12 @@
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         Script Repository
+								<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@login">
+												Login
+								</MudButton>
+								<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@register">
+												Register
+								</MudButton>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
@@ -22,4 +30,21 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+
+				void login()
+				{
+								var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<LoginComponent>("Login", options);
+				}
+
+				void register()
+				{
+								var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<RegisterComponent>("Register", options);
+				}
+
+				void logout()
+				{
+								
+				}
 }

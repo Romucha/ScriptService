@@ -55,7 +55,7 @@ namespace ScriptService.API.Controllers
 
                 return Accepted();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 var error = $"Error in {nameof(Register)}";
                 _logger.LogError(ex, error);
@@ -87,5 +87,5 @@ namespace ScriptService.API.Controllers
                 return Problem(error);
             }
         }
-				}
+    }
 }

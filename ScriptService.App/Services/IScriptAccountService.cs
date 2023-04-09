@@ -2,12 +2,12 @@
 
 namespace ScriptService.App.Services
 {
-				public interface IScriptAccountService
-				{
-								Task<bool> Login(LoginUserDTO loginUserDTO);
+    public interface IScriptAccountService
+    {
+        Task<bool> Login(LoginUserDTO loginUserDTO);
 
-								Task<bool> Logout();
+        Task<bool> Logout();
 
-								Task<bool> Register(RegisterUserDTO registerUserDTO);
-				}
+        Task<bool> Register(RegisterUserDTO registerUserDTO);
+    }
 }

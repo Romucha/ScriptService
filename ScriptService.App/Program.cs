@@ -25,7 +25,8 @@ builder.Services.AddHttpClient<IScriptAccountService, ScriptAccountService>(clie
 client.BaseAddress = new Uri(builder.Configuration["ScriptServiceUrl"]));
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, ScriptAuthenticationStateProvider>();
+builder.Services.AddScoped<ScriptAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(c => (AuthenticationStateProvider)c.GetRequiredService(typeof(ScriptAuthenticationStateProvider)));
 
 builder.Services.AddHttpClient<IScriptManagementService, ScriptManagementService>(client =>
 client.BaseAddress = new Uri(builder.Configuration["ScriptServiceUrl"]));
