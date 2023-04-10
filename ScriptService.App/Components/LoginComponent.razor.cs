@@ -9,6 +9,9 @@ namespace ScriptService.App.Components
         [Inject]
         private ScriptAuthenticationStateProvider scriptAuthentication { get; set; }
 
+        [Inject]
+        private NavigationManager navigationManager { get; set; }
+
 		private MudForm form;
 
         private async void loginSubmit()
@@ -21,7 +24,13 @@ namespace ScriptService.App.Components
                     Email = scriptAuthentication.CurrentUser.Email,
                     Password = scriptAuthentication.CurrentUser.Password,
                 });
+                navigationManager.NavigateTo(navigationManager.Uri);
             }
+        }
+
+        private async void loginReset()
+        {
+            navigationManager.NavigateTo(navigationManager.Uri);
         }
 	}
 }
