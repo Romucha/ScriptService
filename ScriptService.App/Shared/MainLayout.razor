@@ -1,7 +1,9 @@
 ﻿@using MudBlazor
 @using Components
+@using ScriptService.App.Services;
 @inherits LayoutComponentBase
 @inject IDialogService DialogService
+@inject ScriptAuthenticationStateProvider stateProvider
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
@@ -9,12 +11,19 @@
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         Script Repository
-								<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@login">
-												Login
-								</MudButton>
-								<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@register">
-												Register
-								</MudButton>
+								@if (stateProvider.CurrentUser != null && stateProvider.CurrentUser.IsAuthenticated)
+								{
+												<MudText Align="@Align.Right">Hello, @stateProvider.CurrentUser.Email!</MudText>
+								}
+								else
+								{
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@login">
+																Login
+												</MudButton>
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@register">
+																Register
+												</MudButton>
+								}
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
