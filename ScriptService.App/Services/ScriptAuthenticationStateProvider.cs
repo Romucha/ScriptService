@@ -32,10 +32,13 @@ namespace ScriptService.App.Services
 
         public async Task Logout()
         {
-            await _accountService.Logout();
-            CurrentUser = default!;
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            if (await _accountService.Logout())
+            {
+                CurrentUser = new AuthenticatedUserDTO();
+                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            }
         }
+
         public async Task Login(LoginUserDTO loginParameters)
         {
             if (await _accountService.Login(loginParameters))

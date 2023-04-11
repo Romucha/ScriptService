@@ -33,7 +33,7 @@ namespace ScriptService.App.Services
 
         public async Task<bool> Logout()
         {
-            await _localStorageService.SetItemAsStringAsync("jwttoken", null);
+            await _localStorageService.SetItemAsStringAsync("jwttoken", string.Empty);
             return true;
         }
 

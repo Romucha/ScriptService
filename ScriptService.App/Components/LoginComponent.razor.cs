@@ -4,33 +4,33 @@ using ScriptService.App.Services;
 
 namespace ScriptService.App.Components
 {
-	public partial class LoginComponent
-	{
-        [Inject]
-        private ScriptAuthenticationStateProvider scriptAuthentication { get; set; }
+				public partial class LoginComponent
+				{
+								[Inject]
+								private ScriptAuthenticationStateProvider scriptAuthentication { get; set; }
 
-        [Inject]
-        private NavigationManager navigationManager { get; set; }
+								[CascadingParameter]
+								MudDialogInstance MudDialog { get; set; }
 
-		private MudForm form;
+								private MudForm form;
 
-        private async void loginSubmit()
-        {
-            await form.Validate();
-            if (form.IsValid)
-            {
-                await scriptAuthentication.Login(new Models.DTO.User.LoginUserDTO()
-                {
-                    Email = scriptAuthentication.CurrentUser.Email,
-                    Password = scriptAuthentication.CurrentUser.Password,
-                });
-                navigationManager.NavigateTo(navigationManager.Uri);
-            }
-        }
+								private async void loginSubmit()
+								{
+												await form.Validate();
+												if (form.IsValid)
+												{
+																await scriptAuthentication.Login(new Models.DTO.User.LoginUserDTO()
+																{
+																				Email = scriptAuthentication.CurrentUser.Email,
+																				Password = scriptAuthentication.CurrentUser.Password,
+																});
+																MudDialog.Close(DialogResult.Ok<bool>(true));
+												}
+								}
 
-        private async void loginReset()
-        {
-            navigationManager.NavigateTo(navigationManager.Uri);
-        }
-	}
+								private async void loginReset()
+								{
+												MudDialog.Close(DialogResult.Cancel());
+								}
+				}
 }

@@ -1,5 +1,5 @@
 ﻿<MudPaper>
-				<MudForm @ref="form" onsubmit="@loginSubmit" onreset="@loginReset">
+				<MudForm @ref="form" @onsubmit="loginSubmit" @onreset="loginReset">
 								<MudTextField @bind-Value="@scriptAuthentication.CurrentUser.Email" InputType="InputType.Email" T="string" Label="Email" Required="true" />
 								<MudTextField @bind-Value="@scriptAuthentication.CurrentUser.Password" InputType="InputType.Password" T="string" Label="Password" Required="true" />
 								<MudButton ButtonType="@ButtonType.Submit">Login</MudButton>

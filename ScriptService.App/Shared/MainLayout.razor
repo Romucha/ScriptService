@@ -10,10 +10,12 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        Script Repository
-								@if (stateProvider.CurrentUser != null && stateProvider.CurrentUser.IsAuthenticated)
+        @if (stateProvider.CurrentUser != null && stateProvider.CurrentUser.IsAuthenticated)
 								{
 												<MudText Align="@Align.Right">Hello, @stateProvider.CurrentUser.Email!</MudText>
+												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@logout">
+																Logout
+												</MudButton>
 								}
 								else
 								{
@@ -42,8 +44,8 @@
 
 				void login()
 				{
-								var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<LoginComponent>("Login", options);
+								var options = new DialogOptions { CloseOnEscapeKey = true, NoHeader = true };
+								var dialogref = DialogService.Show<LoginComponent>("Login", options);
 				}
 
 				void register()
@@ -52,8 +54,8 @@
         DialogService.Show<RegisterComponent>("Register", options);
 				}
 
-				void logout()
+				async void logout()
 				{
-								
+								await stateProvider.Logout();
 				}
 }
