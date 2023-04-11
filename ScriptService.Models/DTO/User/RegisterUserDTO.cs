@@ -13,5 +13,8 @@ namespace ScriptService.Models.DTO.User
         public string PhoneNumber { get; set; }
 
         public ICollection<string> Roles { get; set; }
+
+								[Compare(nameof(Password))]
+								public string ConfirmPassword { get; set; }
     }
 }

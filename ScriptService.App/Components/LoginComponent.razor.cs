@@ -24,13 +24,13 @@ namespace ScriptService.App.Components
 																				Email = scriptAuthentication.CurrentUser.Email,
 																				Password = scriptAuthentication.CurrentUser.Password,
 																});
-																MudDialog.Close(DialogResult.Ok<bool>(true));
+																MudDialog.Close();
 												}
 								}
 
-								private async void loginReset()
+								private void loginReset()
 								{
-												MudDialog.Close(DialogResult.Cancel());
+												MudDialog.Cancel();
 								}
 				}
 }
