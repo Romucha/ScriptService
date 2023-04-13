@@ -97,7 +97,7 @@ namespace ScriptService.API.Controllers
                     await _unitOfWork.Scripts.Delete(id);
                     await _unitOfWork.Save();
 
-                    return NoContent();
+                    return Accepted();
                 }
             }
             else
@@ -107,7 +107,7 @@ namespace ScriptService.API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -128,7 +128,7 @@ namespace ScriptService.API.Controllers
                     _unitOfWork.Scripts.Update(script);
                     await _unitOfWork.Save();
 
-                    return NoContent();
+                    return Accepted();
                 }
             }
             else

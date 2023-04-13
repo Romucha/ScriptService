@@ -13,10 +13,10 @@ namespace ScriptService.ComponentLibrary.Services
 
 								Task<Script> GetScriptByIdAsync(int id);
 
-								Task DeleteScriptAsync(int id);
+								Task DeleteScriptAsync(int id, string token);
 
-								Task<Script> AddScriptAsync(Script script);
+								Task<Script> AddScriptAsync(Script script, string token);
 
-								Task UpdateScriptAsync(Script script);
+								Task UpdateScriptAsync(Script script, string token);
 				}
 }

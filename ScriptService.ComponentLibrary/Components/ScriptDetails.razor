@@ -11,10 +11,11 @@ else
 								<MudForm @onsubmit="OnSubmit">
 												<MudText>@_script.FullName</MudText>
 												<MudDivider />
-												<textarea @bind-value="@_script.Content" @bind-value:event="oninput"></textarea>
+												<textarea @bind="@_script.Content"></textarea>
+												<MudDivider />
 												<AuthorizeView>
-																<MudButton StartIcon="@Icons.Material.Filled.Save" Color="@Color.Primary">Save</MudButton>
-																<MudButton Href="/scripts" Color="@Color.Secondary">Cancel</MudButton>
+																<MudButton StartIcon="@Icons.Material.Filled.Save" Color="@Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+																<MudButton Href="/scripts" Color="@Color.Secondary" ButtonType="ButtonType.Reset">Cancel</MudButton>
 												</AuthorizeView>				
 								</MudForm>
 				</MudPaper>

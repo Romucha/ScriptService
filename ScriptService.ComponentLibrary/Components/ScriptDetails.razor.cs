@@ -18,6 +18,9 @@ namespace ScriptService.ComponentLibrary.Components
 								[Inject]
 								private NavigationManager _navigationManager { get; set; }
 
+								[Inject]
+								private ILocalStorageService localStorageService { get; set; }
+
 								private Script _script { get; set; }
 
 								[ParameterAttribute]
@@ -32,7 +35,8 @@ namespace ScriptService.ComponentLibrary.Components
 								{
 												if (_script != null)
 												{
-																await _scriptManagementService.UpdateScriptAsync(_script);
+																await _scriptManagementService.UpdateScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
+																_navigationManager.NavigateTo("/scripts");
 												}
 								}
 				}
