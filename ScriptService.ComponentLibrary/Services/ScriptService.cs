@@ -67,7 +67,7 @@ namespace ScriptService.ComponentLibrary.Services
 												});
 												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 												//_httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-												await _httpClient.PutAsync($"api/scripts/{script.Id}", content);
+												var response = await _httpClient.PutAsync($"api/scripts/{script.Id}", content);
 
 												//HttpRequestMessage httpRequestMessage = new HttpRequestMessage
 												//{
