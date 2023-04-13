@@ -66,19 +66,8 @@ namespace ScriptService.ComponentLibrary.Services
 																UpdatedAt = DateTime.UtcNow
 												});
 												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-												//_httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+												
 												var response = await _httpClient.PutAsync($"api/scripts/{script.Id}", content);
-
-												//HttpRequestMessage httpRequestMessage = new HttpRequestMessage
-												//{
-												//				RequestUri = new Uri("api/scripts/"),
-												//				Content = new StringContent(JsonSerializer.Serialize(script), Encoding.UTF8, "application/json"),
-												//				Method = HttpMethod.Put
-												//};
-
-												//WebAssemblyHttpRequestMessageExtensions.SetBrowserRequestMode(httpRequestMessage, BrowserRequestMode.NoCors);
-
-												//HttpResponseMessage response = client.SendAsync(httpRequestMessage).Result;
 								}
 				}
 }

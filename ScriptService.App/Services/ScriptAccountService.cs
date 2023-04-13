@@ -25,8 +25,8 @@ namespace ScriptService.App.Services
             var response = await _httpClient.PostAsync($"/api/Account/Login", jsonContent);
             if (response.IsSuccessStatusCode)
             {
-                await _localStorageService.SetItemAsStringAsync("jwttoken", await response.Content.ReadAsStringAsync());
-                return true;
+																SetToken(response);
+																return true;
             }
             return false;
         }
@@ -43,10 +43,26 @@ namespace ScriptService.App.Services
             var response = await _httpClient.PostAsync("/api/Account/Register", jsonContent);
             if (response.IsSuccessStatusCode)
             {
-                await _localStorageService.SetItemAsStringAsync("jwttoken", await response.Content.ReadAsStringAsync());
-                return true;
-            }
+                SetToken(response);
+																return true;
+												}
             return false;
+        }
+
+        private async void SetToken(HttpResponseMessage? response)
+        {
+												var jwtoken = await JsonSerializer.DeserializeAsync<JWtToken>(response.Content.ReadAsStream());
+												await _localStorageService.SetItemAsStringAsync("jwttoken", jwtoken.token);
+								}
+
+        private class JWtToken
+        {
+            public string token { get; set; }
+
+            public static void SetToken(string inputTOken)
+            {
+
+            }
         }
     }
 }
