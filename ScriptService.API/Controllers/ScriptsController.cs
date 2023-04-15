@@ -66,6 +66,8 @@ namespace ScriptService.API.Controllers
             if (ModelState.IsValid)
             {
                 var script = _mapper.Map<Script>(createScriptDTO);
+                script.CreatedAt = DateTime.UtcNow;
+                script.UpdatedAt = DateTime.UtcNow;
                 await _unitOfWork.Scripts.Insert(script);
                 await _unitOfWork.Save();
                 return CreatedAtRoute(nameof(GetById), new { id = script.Id }, script);
@@ -125,6 +127,7 @@ namespace ScriptService.API.Controllers
                 else
                 {
                     _mapper.Map(updateScriptDTO, script);
+                    script.UpdatedAt = DateTime.UtcNow;
                     _unitOfWork.Scripts.Update(script);
                     await _unitOfWork.Save();
 

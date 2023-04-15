@@ -10,6 +10,8 @@ else
 				<MudPaper>
 								<MudForm @onsubmit="OnSubmit">
 												<MudText>@_script.FullName</MudText>
+												<MudText>Created at: @_script.CreatedAt</MudText>
+												<MudText>Updated at: @_script.UpdatedAt</MudText>
 												<MudDivider />
 												<textarea @bind="@_script.Content"></textarea>
 												<MudDivider />
