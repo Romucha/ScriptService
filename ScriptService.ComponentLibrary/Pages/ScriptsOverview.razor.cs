@@ -32,7 +32,17 @@ namespace ScriptService.ComponentLibrary.Pages
         private async void ScriptClick(Script script)
         {
             _navigationManager.NavigateTo($"/scripts/{script.Id}");
-												await _localStorageService.SetItemAsync<Script>("SelectedScript", script);
         }
+
+        private async Task DeleteScriptAsync(Script script)
+        {
+            await _scriptManagementService.DeleteScriptAsync(script.Id, await _localStorageService.GetItemAsStringAsync("jwttoken"));
+												this.StateHasChanged();
+        }
+
+        private void AddScript()
+        {
+												_navigationManager.NavigateTo($"/scripts/0");
+								}
     }
 }

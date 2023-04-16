@@ -28,14 +28,21 @@ namespace ScriptService.ComponentLibrary.Components
 
 								protected override async Task OnInitializedAsync()
 								{
-												_script = await _scriptManagementService.GetScriptByIdAsync(Id);
+												_script = Id > 0 ? await _scriptManagementService.GetScriptByIdAsync(Id) : new Script();
 								}
 
 								private async void OnSubmit()
 								{
 												if (_script != null)
 												{
-																await _scriptManagementService.UpdateScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
+																if (Id > 0)
+																{
+																				await _scriptManagementService.UpdateScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
+																}
+																else
+																{
+																				await _scriptManagementService.AddScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
+																}
 																_navigationManager.NavigateTo("/scripts");
 												}
 								}

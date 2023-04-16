@@ -9,11 +9,22 @@
 else
 {
     <MudText>Scripts</MudText>
+    <AuthorizeView>
+        <Authorized>
+            <MudButton Color="Color.Primary" OnClick="AddScript">Add script</MudButton>
+        </Authorized>
+    </AuthorizeView>
     <MudPaper Outlined="true">
         <MudList Clickable="true">
             @foreach (var script in Scripts)
             {
-                <MudListItem Text="@script.FullName" Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)"></MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)">
+																				<MudText>@script.FullName</MudText>
+																				<AuthorizeView>
+																								<MudButton OnClick="() => ScriptClick(script)" Color="Color.Warning">Edit</MudButton>
+																								<MudButton OnClick="() => DeleteScriptAsync(script)" Color="Color.Warning">Delete</MudButton>
+																				</AuthorizeView>
+                </MudListItem>
                 <MudDivider />
             }
         </MudList>

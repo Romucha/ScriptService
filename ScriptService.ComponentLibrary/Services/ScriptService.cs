@@ -21,7 +21,7 @@ namespace ScriptService.ComponentLibrary.Services
 								public async Task<Script> AddScriptAsync(Script script, string token)
 								{
 												var content = new StringContent(JsonSerializer.Serialize(script), Encoding.UTF8, "application/json");
-
+												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 												var response = await _httpClient.PostAsync("api/scripts", content);
 												if (response.IsSuccessStatusCode)
 												{
@@ -36,6 +36,7 @@ namespace ScriptService.ComponentLibrary.Services
 
 								public async Task DeleteScriptAsync(int id, string token)
 								{
+												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 												await _httpClient.DeleteAsync($"api/scripts/{id}");
 								}
 
