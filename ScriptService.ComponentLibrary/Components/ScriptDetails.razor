@@ -30,8 +30,8 @@ else
 	{
 		<MudPaper>
 			<MudForm @onsubmit="OnSubmit">
-				<MudTextField @bind-Value="@_script.Name" Label="Standart"></MudTextField>
-				<MudSelect Value="@_script.Type">
+				<MudTextField @bind-Value="@_script.Name" Label="Script name"></MudTextField>
+				<MudSelect @bind-Value="@_script.Type">
 					@foreach (ScriptType type in Enum.GetValues(typeof(ScriptType)))
 					{
 								<MudSelectItem Value="@type">@type</MudSelectItem>
