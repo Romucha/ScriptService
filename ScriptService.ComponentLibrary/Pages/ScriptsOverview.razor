@@ -19,7 +19,7 @@ else
             @foreach (var script in Scripts)
             {
                 <MudListItem Icon="@Icons.Material.Filled.FilePresent" OnClick="() => ScriptClick(script)">
-																				<MudText>@script.FullName</MudText>
+																				<MudText>@($"{script.Name}.{script.Type}")</MudText>
 																				<AuthorizeView>
 																								<MudButton OnClick="() => ScriptClick(script)" Color="Color.Warning">Edit</MudButton>
 																								<MudButton OnClick="() => DeleteScriptAsync(script)" Color="Color.Warning">Delete</MudButton>

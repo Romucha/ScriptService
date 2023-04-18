@@ -51,7 +51,7 @@ namespace ScriptService.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
-            var result = _mapper.Map<GetScriptDTO>(script);
+            var result = _mapper.Map<DetailScriptDTO>(script);
 
             return Ok(result);
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ScriptService.ComponentLibrary.Components
@@ -28,7 +29,7 @@ namespace ScriptService.ComponentLibrary.Components
 
 								protected override async Task OnInitializedAsync()
 								{
-												_script = Id > 0 ? await _scriptManagementService.GetScriptByIdAsync(Id) : new Script();
+												_script = Id > 0 ? JsonSerializer.Deserialize<Script>(JsonSerializer.Serialize(await _scriptManagementService.GetScriptByIdAsync(Id))) : new Script();
 								}
 
 								private async void OnSubmit()

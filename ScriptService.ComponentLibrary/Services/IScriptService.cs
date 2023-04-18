@@ -1,4 +1,5 @@
 ﻿using ScriptService.Models.Data;
+using ScriptService.Models.DTO.Script;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace ScriptService.ComponentLibrary.Services
 {
 				public interface IScriptManagementService
 				{
-								Task<IEnumerable<Script>> GetAllScriptsAsync(string filter = null);
+								Task<IEnumerable<GetScriptDTO>> GetAllScriptsAsync(string filter = null);
 
-								Task<Script> GetScriptByIdAsync(int id);
+								Task<DetailScriptDTO> GetScriptByIdAsync(int id);
 
 								Task DeleteScriptAsync(int id, string token);
 

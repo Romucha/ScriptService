@@ -40,18 +40,18 @@ namespace ScriptService.ComponentLibrary.Services
 												await _httpClient.DeleteAsync($"api/scripts/{id}");
 								}
 
-								public async Task<IEnumerable<Script>> GetAllScriptsAsync(string filter = null)
+								public async Task<IEnumerable<GetScriptDTO>> GetAllScriptsAsync(string filter = null)
 								{
 												Console.WriteLine("Meow");
-												return await JsonSerializer.DeserializeAsync<IEnumerable<Script>>(await _httpClient.GetStreamAsync($"api/scripts"), new JsonSerializerOptions()
+												return await JsonSerializer.DeserializeAsync<IEnumerable<GetScriptDTO>>(await _httpClient.GetStreamAsync($"api/scripts"), new JsonSerializerOptions()
 												{
 																PropertyNameCaseInsensitive = true
 												});
 								}
 
-								public async Task<Script> GetScriptByIdAsync(int id)
+								public async Task<DetailScriptDTO> GetScriptByIdAsync(int id)
 								{
-												return await JsonSerializer.DeserializeAsync<Script>(await _httpClient.GetStreamAsync($"api/scripts/{id}"), new JsonSerializerOptions()
+												return await JsonSerializer.DeserializeAsync<DetailScriptDTO>(await _httpClient.GetStreamAsync($"api/scripts/{id}"), new JsonSerializerOptions()
 												{
 																PropertyNameCaseInsensitive = true
 												});
