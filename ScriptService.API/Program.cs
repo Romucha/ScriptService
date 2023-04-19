@@ -13,6 +13,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseKestrel();
+
 builder.Services.AddControllers();
 //Database
 builder.Services.AddDbContext<ScriptDbContext>(options =>
@@ -76,12 +78,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors();
 using (var scope = app.Services.CreateScope())
 {
     ((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();

@@ -1,0 +1,10 @@
+﻿<MudPaper>
+				<MudForm @ref="form" @onsubmit="registerSubmit" @onreset="registerReset">
+								<MudTextField @bind-Value="@user.Email" InputType="InputType.Email" T="string" Label="Email" Required="true" />
+								<MudTextField @bind-Value="@user.PhoneNumber" InputType="InputType.Telephone" T="string" Label="Phonenumber" Required="true" />
+								<MudTextField @bind-Value="@user.Password" InputType="InputType.Password" T="string" Label="Password" Required="true" />
+								<MudTextField @bind-Value="@user.ConfirmPassword" InputType="InputType.Password" T="string" Label="Confirm password" Required="true" />
+								<MudButton ButtonType="@ButtonType.Submit">Register</MudButton>
+								<MudButton ButtonType="@ButtonType.Reset">Cancel</MudButton>
+				</MudForm>
+</MudPaper>

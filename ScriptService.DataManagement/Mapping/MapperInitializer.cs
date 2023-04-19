@@ -17,9 +17,11 @@ namespace ScriptService.DataManagement.Mapping
         {
             CreateMap<ScriptUser, LoginUserDTO>().ReverseMap();
             CreateMap<ScriptUser, RegisterUserDTO>().ReverseMap();
+            CreateMap<ScriptUser, AuthenticatedUserDTO>().ReverseMap();
             CreateMap<Script, CreateScriptDTO>().ReverseMap();
             CreateMap<Script, GetScriptDTO>().ReverseMap();
             CreateMap<Script, UpdateScriptDTO>().ReverseMap();
+            CreateMap<Script, DetailScriptDTO>().ReverseMap();
         }
     }
 }

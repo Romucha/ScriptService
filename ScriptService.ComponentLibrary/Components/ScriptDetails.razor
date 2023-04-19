@@ -1,0 +1,50 @@
+﻿@page "/scripts/{Id:int}"
+@using ScriptService.Models.Data;
+
+@if (_script == null)
+{
+	<MudImage Src="images/loading.gif" />
+}
+else
+{
+
+	<MudNavLink Href="/scripts">Back to scripts</MudNavLink>
+	if (Id > 0)
+	{
+		<MudPaper>
+			<MudForm @onsubmit="OnSubmit">
+				<MudText>@_script.FullName</MudText>
+				<MudText contenteditable="false">Created at: @_script.CreatedAt</MudText>
+				<MudText contenteditable="false">Updated at: @_script.UpdatedAt</MudText>
+				<MudDivider />
+				<textarea @bind="@_script.Content"></textarea>
+				<MudDivider />
+				<AuthorizeView>
+					<MudButton StartIcon="@Icons.Material.Filled.Save" Color="@Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+					<MudButton Href="/scripts" Color="@Color.Secondary" ButtonType="ButtonType.Reset">Cancel</MudButton>
+				</AuthorizeView>
+			</MudForm>
+		</MudPaper>
+	}
+	else
+	{
+		<MudPaper>
+			<MudForm @onsubmit="OnSubmit">
+				<MudTextField @bind-Value="@_script.Name" Label="Script name"></MudTextField>
+				<MudSelect @bind-Value="@_script.Type">
+					@foreach (ScriptType type in Enum.GetValues(typeof(ScriptType)))
+					{
+								<MudSelectItem Value="@type">@type</MudSelectItem>
+					}
+				</MudSelect>								
+				<MudDivider />
+				<textarea @bind="@_script.Content"></textarea>
+				<MudDivider />
+				<AuthorizeView>
+					<MudButton StartIcon="@Icons.Material.Filled.Save" Color="@Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+					<MudButton Href="/scripts" Color="@Color.Secondary" ButtonType="ButtonType.Reset">Cancel</MudButton>
+				</AuthorizeView>
+			</MudForm>
+		</MudPaper>
+	}
+}

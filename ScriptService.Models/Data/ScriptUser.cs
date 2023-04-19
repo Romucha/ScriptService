@@ -9,5 +9,6 @@ namespace ScriptService.Models.Data
 {
     public class ScriptUser : IdentityUser
     {
-    }
+
+	}
 }
