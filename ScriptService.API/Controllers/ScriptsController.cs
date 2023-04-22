@@ -32,8 +32,9 @@ namespace ScriptService.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string? filter = null)
-        {
-            var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
+								{
+												_logger.LogInformation("Meow");
+												var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
             true 
             : 
             x.Content.ToLower().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0

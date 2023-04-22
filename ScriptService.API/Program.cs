@@ -10,6 +10,8 @@ using ScriptService.DataManagement.Mapping;
 using ScriptService.DataManagement.Repository;
 using ScriptService.Models.Data;
 using System.Text;
+using NLog;
+using NLog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,13 +42,17 @@ builder.Services.AddDbContext<ScriptDbContext>(options =>
 });
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+//mapping
 builder.Services.AddAutoMapper(typeof(MapperInitializer));
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Logging.AddNLog(builder.Configuration, new NLogProviderOptions()
+{
+			 
+});
 
 //CORS
 builder.Services.AddCors(policy =>
