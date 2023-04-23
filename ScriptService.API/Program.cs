@@ -12,87 +12,100 @@ using ScriptService.Models.Data;
 using System.Text;
 using NLog;
 using NLog.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.WebHost.UseKestrel();
-
-builder.Services.AddControllers();
-//Database
-builder.Services.AddDbContext<ScriptDbContext>(options =>
+try
 {
-    string connString = string.Empty;
-    if (builder.Environment.IsDevelopment())
-    {
-        connString = "Dev";
-    }
-    else if (builder.Environment.IsProduction())
-    {
-        connString = "Prod";
-    }
-    else if (builder.Environment.IsStaging())
-    {
-        connString = "Stage";
-    }
-    else
-    {
-        connString = "Default";
-    }
-    options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
-});
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-//mapping
-builder.Services.AddAutoMapper(typeof(MapperInitializer));
+				var builder = WebApplication.CreateBuilder(args);
 
-//swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+				builder.WebHost.UseKestrel();
 
-builder.Logging.AddNLog(builder.Configuration, new NLogProviderOptions()
-{
-			 
-});
+				builder.Services.AddControllers();
+				//Database
+				builder.Services.AddDbContext<ScriptDbContext>(options =>
+				{
+								string connString = string.Empty;
+								if (builder.Environment.IsDevelopment())
+								{
+												connString = "Dev";
+								}
+								else if (builder.Environment.IsProduction())
+								{
+												connString = "Prod";
+								}
+								else if (builder.Environment.IsStaging())
+								{
+												connString = "Stage";
+								}
+								else
+								{
+												connString = "Default";
+								}
+								options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
+				});
+				builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+				builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+				//mapping
+				builder.Services.AddAutoMapper(typeof(MapperInitializer));
 
-//CORS
-builder.Services.AddCors(policy =>
-{
-    policy.AddPolicy("AllowScriptHeaders", options =>
-    {
-        options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
-    });
-    policy.AddDefaultPolicy(options =>
-    {
-        options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    });
-});
+				//swagger
+				builder.Services.AddEndpointsApiExplorer();
+				builder.Services.AddSwaggerGen();
 
-//identity core
-builder.Services.ConfigureIdentity();
+				builder.Logging.AddNLog(builder.Configuration, new NLogProviderOptions()
+				{
 
-//authentication and jwt
-builder.Services.ConfigureAuthentication(builder.Configuration);
-builder.Services.AddScoped<IAuthManager, AuthManager>();
+				});
 
-var app = builder.Build();
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+				//CORS
+				builder.Services.AddCors(policy =>
+				{
+								policy.AddPolicy("AllowScriptHeaders", options =>
+								{
+												options.AllowAnyOrigin().AllowAnyMethod().WithHeaders(builder.Configuration.GetSection("CORS").GetValue<string>("Header"));
+								});
+								policy.AddDefaultPolicy(options =>
+								{
+												options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+								});
+				});
+
+				//identity core
+				builder.Services.ConfigureIdentity();
+
+				//authentication and jwt
+				builder.Services.ConfigureAuthentication(builder.Configuration);
+				builder.Services.AddScoped<IAuthManager, AuthManager>();
+
+				var app = builder.Build();
+				// Configure the HTTP request pipeline.
+				if (app.Environment.IsDevelopment())
+				{
+								app.UseSwagger();
+								app.UseSwaggerUI();
+				}
+				app.AddExceptionHandler();
+
+				app.UseHttpsRedirection();
+
+				app.UseCors();
+				app.UseAuthentication();
+				app.UseAuthorization();
+
+				app.MapControllers();
+
+				using (var scope = app.Services.CreateScope())
+				{
+								((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
+				}
+
+				app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseCors();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
+catch (Exception ex)
 {
-    ((IDbInitializer)scope.ServiceProvider.GetService(typeof(IDbInitializer))).Initialize();
+				NLog.LogManager.GetCurrentClassLogger().Fatal(ex, "Failed to start web service app");
 }
-
-app.Run();
+finally
+{
+				NLog.LogManager.Flush();
+}
