@@ -23,7 +23,6 @@ try
 
 				builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-
 				builder.Services.AddHttpClient<IScriptAccountService, ScriptAccountService>(client =>
 				client.BaseAddress = new Uri(builder.Configuration["ScriptServiceUrl"]));
 				builder.Services.AddOptions();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ScriptService.Models.Paging
@@ -18,5 +19,10 @@ namespace ScriptService.Models.Paging
             get => pageSize;
             set => pageSize = value > maxPaxSize ? maxPaxSize : value;
         }
-    }
+
+								public override string ToString()
+								{
+												return JsonSerializer.Serialize(this);
+								}
+	}
 }

@@ -24,23 +24,8 @@ try
 				//Database
 				builder.Services.AddDbContext<ScriptDbContext>(options =>
 				{
-								string connString = string.Empty;
-								if (builder.Environment.IsDevelopment())
-								{
-												connString = "Dev";
-								}
-								else if (builder.Environment.IsProduction())
-								{
-												connString = "Prod";
-								}
-								else if (builder.Environment.IsStaging())
-								{
-												connString = "Stage";
-								}
-								else
-								{
-												connString = "Default";
-								}
+								string connString = "Default";
+								
 								options.UseNpgsql(builder.Configuration.GetConnectionString(connString));
 				});
 				builder.Services.AddScoped<IDbInitializer, DbInitializer>();
@@ -56,7 +41,6 @@ try
 				{
 
 				});
-
 				//CORS
 				builder.Services.AddCors(policy =>
 				{

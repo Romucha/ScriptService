@@ -1,4 +1,5 @@
-﻿using ScriptService.Models.Data;
+﻿using Microsoft.Extensions.Logging;
+using ScriptService.Models.Data;
 using ScriptService.Models.DTO.Script;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,16 @@ namespace ScriptService.ComponentLibrary.Services
 				public class ScriptManagementService : IScriptManagementService
 				{
 								private HttpClient _httpClient;
-								public ScriptManagementService(HttpClient httpClient)
+								private ILogger<ScriptManagementService> _logger;
+								public ScriptManagementService(HttpClient httpClient, ILogger<ScriptManagementService> logger)
 								{
 												_httpClient = httpClient;
+												_logger = logger;
 								}
 
 								public async Task<Script> AddScriptAsync(Script script, string token)
 								{
+												_logger.LogInformation("Attempt to add a new script");
 												var content = new StringContent(JsonSerializer.Serialize(script), Encoding.UTF8, "application/json");
 												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 												var response = await _httpClient.PostAsync("api/scripts", content);
@@ -36,13 +40,14 @@ namespace ScriptService.ComponentLibrary.Services
 
 								public async Task DeleteScriptAsync(int id, string token)
 								{
+												_logger.LogInformation($"Attempt to delete the script with id: {id}");
 												_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 												await _httpClient.DeleteAsync($"api/scripts/{id}");
 								}
 
 								public async Task<IEnumerable<GetScriptDTO>> GetAllScriptsAsync(string filter = null)
 								{
-												Console.WriteLine("Meow");
+												_logger.LogInformation($"Attempt to get all scripts");
 												return await JsonSerializer.DeserializeAsync<IEnumerable<GetScriptDTO>>(await _httpClient.GetStreamAsync($"api/scripts"), new JsonSerializerOptions()
 												{
 																PropertyNameCaseInsensitive = true
@@ -51,6 +56,7 @@ namespace ScriptService.ComponentLibrary.Services
 
 								public async Task<DetailScriptDTO> GetScriptByIdAsync(int id)
 								{
+												_logger.LogInformation($"Attempt to get the script with id: {id}");
 												return await JsonSerializer.DeserializeAsync<DetailScriptDTO>(await _httpClient.GetStreamAsync($"api/scripts/{id}"), new JsonSerializerOptions()
 												{
 																PropertyNameCaseInsensitive = true
@@ -59,6 +65,7 @@ namespace ScriptService.ComponentLibrary.Services
 
 								public async Task UpdateScriptAsync(Script script, string token)
 								{
+												_logger.LogInformation($"Attempt to update the script with id: {script.Id}");
 												var content = JsonContent.Create(new UpdateScriptDTO()
 												{
 																Content = script.Content,
