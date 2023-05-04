@@ -1,4 +1,5 @@
-﻿@page "/scripts/{Id:int}"
+﻿@page "/scripts/details/{id:int}"
+@page "/scripts/details"
 @using ScriptService.Models.Data;
 
 @if (_script == null)
@@ -9,7 +10,7 @@ else
 {
 
 	<MudNavLink Href="/scripts">Back to scripts</MudNavLink>
-	if (Id > 0)
+	if (id != null)
 	{
 		<MudPaper>
 			<MudForm @onsubmit="OnSubmit">

@@ -25,18 +25,26 @@ namespace ScriptService.ComponentLibrary.Components
 								private Script _script { get; set; }
 
 								[ParameterAttribute]
-								public int Id { get; set; }
+								public int? id { get; set; }
 
 								protected override async Task OnInitializedAsync()
 								{
-												_script = Id > 0 ? JsonSerializer.Deserialize<Script>(JsonSerializer.Serialize(await _scriptManagementService.GetScriptByIdAsync(Id))) : new Script();
+												if (id == null)
+												{
+																_script = new Script();
+												}
+												else
+												{
+																int _id = (int)id;
+																_script = JsonSerializer.Deserialize<Script>(JsonSerializer.Serialize(await _scriptManagementService.GetScriptByIdAsync(_id)));
+												}
 								}
 
 								private async void OnSubmit()
 								{
 												if (_script != null)
 												{
-																if (Id > 0)
+																if (id > 0)
 																{
 																				await _scriptManagementService.UpdateScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
 																}
