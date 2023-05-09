@@ -21,7 +21,7 @@ namespace ScriptService.ComponentLibrary.Services
 												_logger = logger;
 								}
 
-								public async Task<Script> AddScriptAsync(Script script, string token)
+								public async Task<DetailScriptDTO> AddScriptAsync(DetailScriptDTO script, string token)
 								{
 												_logger.LogInformation("Attempt to add a new script");
 												var content = new StringContent(JsonSerializer.Serialize(script), Encoding.UTF8, "application/json");
@@ -29,7 +29,7 @@ namespace ScriptService.ComponentLibrary.Services
 												var response = await _httpClient.PostAsync("api/scripts", content);
 												if (response.IsSuccessStatusCode)
 												{
-																return await JsonSerializer.DeserializeAsync<Script>(response.Content.ReadAsStream(), new JsonSerializerOptions()
+																return await JsonSerializer.DeserializeAsync<DetailScriptDTO>(response.Content.ReadAsStream(), new JsonSerializerOptions()
 																{
 																				PropertyNameCaseInsensitive = true
 																});
@@ -63,7 +63,7 @@ namespace ScriptService.ComponentLibrary.Services
 												});
 								}
 
-								public async Task UpdateScriptAsync(Script script, string token)
+								public async Task UpdateScriptAsync(DetailScriptDTO script, string token)
 								{
 												_logger.LogInformation($"Attempt to update the script with id: {script.Id}");
 												var content = JsonContent.Create(new UpdateScriptDTO()

@@ -14,7 +14,7 @@ else
 	{
 		<MudPaper>
 			<MudForm @onsubmit="OnSubmit">
-				<MudText>@_script.FullName</MudText>
+				<MudText>@(_script.Name + _script.Type)</MudText>
 				<MudText contenteditable="false">Created at: @_script.CreatedAt</MudText>
 				<MudText contenteditable="false">Updated at: @_script.UpdatedAt</MudText>
 				<MudDivider />
