@@ -32,7 +32,7 @@ namespace ScriptService.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string? filter = null)
+        public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string filter = null)
 								{
 												_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to get a set of scripts");
 												var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 

@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.App", "Script
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService.ComponentLibrary", "ScriptService.ComponentLibrary\ScriptService.ComponentLibrary.csproj", "{7D2D8879-8DDA-4BB9-90D9-13BE44576136}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.API.Tests", "..\ScriptService.API.Tests\ScriptService.API.Tests.csproj", "{C67E04EB-92BA-40C6-A22D-65C363B4BDF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{7D2D8879-8DDA-4BB9-90D9-13BE44576136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D2D8879-8DDA-4BB9-90D9-13BE44576136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D2D8879-8DDA-4BB9-90D9-13BE44576136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67E04EB-92BA-40C6-A22D-65C363B4BDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67E04EB-92BA-40C6-A22D-65C363B4BDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67E04EB-92BA-40C6-A22D-65C363B4BDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67E04EB-92BA-40C6-A22D-65C363B4BDF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
