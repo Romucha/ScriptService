@@ -68,6 +68,8 @@ namespace ScriptService.API.Tests
 												var mockDbContext = new Mock<ScriptDbContext>();
 												mockDbContext.Setup(c => c.Scripts)
 																								 .Returns(mockDbSet.Object);
+												mockDbContext.Setup(c=>c.Set<Script>())
+																								 .Returns(mockDbSet.Object);
 												ScriptDbContext dbContext = mockDbContext.Object;
 												//logger
 												var mockLogger = new Mock<ILogger<ScriptsController>>();
