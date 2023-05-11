@@ -34,7 +34,7 @@ namespace ScriptService.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string filter = null)
 								{
-												_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to get a set of scripts");
+												_logger.LogInformation($"Attempt to get a set of scripts");
 												var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
             true 
             : 
@@ -52,7 +52,7 @@ namespace ScriptService.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
-												_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to get set the script with id: {id}");
+												_logger.LogInformation($"Attempt to get the script with id: {id}");
 												var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
             var result = _mapper.Map<DetailScriptDTO>(script);
 
@@ -68,7 +68,7 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid)
             {
-																_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to add a new script");
+																_logger.LogInformation($"Attempt to add a new script");
 																var script = _mapper.Map<Script>(createScriptDTO);
                 script.CreatedAt = DateTime.UtcNow;
                 script.UpdatedAt = DateTime.UtcNow;
@@ -92,7 +92,7 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid && id > 0) 
             {
-																_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to add delete the script with id: {id}");
+																_logger.LogInformation($"Attempt to add delete the script with id: {id}");
 																var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
                 if (script == null)
                 {
@@ -123,7 +123,7 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid && id > 0)
             {
-																_logger.LogInformation($"{this.HttpContext.User?.Identity?.Name} attempts to add change the script with id: {id}");
+																_logger.LogInformation($"Attempt to add change the script with id: {id}");
 																var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
                 if (script == null)
                 {
