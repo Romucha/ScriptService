@@ -30,7 +30,7 @@ namespace ScriptService.API.Tests
 								public async void GetTest()
 								{
 												//arrange
-												
+
 												//act
 												var receivedScriptsActionResult = await _fixture.Controller.Get(new RequestParams());
 												var receivedScripts = (receivedScriptsActionResult as OkObjectResult)?.Value as IList<GetScriptDTO>;

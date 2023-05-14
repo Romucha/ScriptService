@@ -18,53 +18,50 @@ namespace ScriptService.API.Tests.Fixtures
 {
     public class ScriptFixture
     {
-        private readonly IConfiguration _configuration;
-        private readonly DbContextOptions<ScriptDbContext> _dbContextOptions;
         private readonly ScriptDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<ScriptsController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private DbSet<Script> _scriptsSet;
 
-
-        public List<Script> Scripts { get; private set; }
+								private List<Script> _scripts = new List<Script>();
+        public List<Script> Scripts 
+								{
+												get => _scripts; 
+												private set
+												{
+																_scripts = value;
+												}
+								}
         public ScriptsController Controller { get; private set; }
         public ScriptFixture()
         {
-            //configuration
-            var mockConfiguration = new Mock<IConfiguration>();
-            _configuration = mockConfiguration.Object;
-
-            //db context options
-            var mockDbContextOptions = new Mock<DbContextOptions<ScriptDbContext>>();
-            _dbContextOptions = mockDbContextOptions.Object;
-
             //script database
             Scripts = new List<Script>()
-                                                {
-                                                                new Script()
-                                                                {
-                                                                                Id = 1,
-                                                                                Name = "Test1",
-                                                                                Type = ScriptType.ps1,
-                                                                                Content = "Test1"
-                                                                },
-                                                                new Script()
-                                                                {
-                                                                                Id = 2,
-                                                                                Name = "Test2",
-                                                                                Type = ScriptType.vbs,
-                                                                                Content = "Test2"
-                                                                },
-                                                                new Script()
-                                                                {
-                                                                                Id = 3,
-                                                                                Name = "Test3",
-                                                                                Type = ScriptType.sh,
-                                                                                Content = "Test3"
-                                                                },
-                                                };
-            var queriableScripts = Scripts.AsQueryable();
+												{
+																new Script()
+																{
+																				Id = 1,
+																				Name = "Test1",
+																				Type = ScriptType.ps1,
+																				Content = "Test1"
+																},
+																new Script()
+																{
+																				Id = 2,
+																				Name = "Test2",
+																				Type = ScriptType.vbs,
+																				Content = "Test2"
+																},
+																new Script()
+																{
+																				Id = 3,
+																				Name = "Test3",
+																				Type = ScriptType.sh,
+																				Content = "Test3"
+																},
+												};
+												var queriableScripts = Scripts.AsQueryable();
             var mockDbSet = new Mock<DbSet<Script>>();
 
             mockDbSet.As<IQueryable<Script>>().Setup(m => m.Provider).Returns(queriableScripts.Provider);
@@ -76,9 +73,9 @@ namespace ScriptService.API.Tests.Fixtures
 
             var mockDbContext = new Mock<ScriptDbContext>();
             mockDbContext.Setup(c => c.Scripts)
-                                                                .Returns(_scriptsSet);
+                         .Returns(_scriptsSet);
             mockDbContext.Setup(c => c.Set<Script>())
-                                                                .Returns(_scriptsSet);
+                         .Returns(_scriptsSet);
             _dbContext = mockDbContext.Object;
             //logger
             var mockLogger = new Mock<ILogger<ScriptsController>>();
