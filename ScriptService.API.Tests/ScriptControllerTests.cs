@@ -59,21 +59,56 @@ namespace ScriptService.API.Tests
 								}
 
 								[Fact]
-								public void PostTest()
+								public async void PostTest()
 								{
-												Assert.Fail("So far noting here");
+												//arrange
+												_fixture.SeedData();
+												CreateScriptDTO createScriptDTO = new CreateScriptDTO()
+												{
+																Name = "Test4",
+																Content = "Test4",
+																Type = ScriptType.sh
+												};
+												//act
+												var postActionResult = await _fixture.Controller.Post(createScriptDTO);
+												//assert
+												Assert.NotNull(postActionResult);
+												//wip
+												//cleanup
+												_fixture.ClearData();
 								}
 
 								[Fact]
-								public void DeleteTest()
+								public async void DeleteTest()
 								{
-												Assert.Fail("So far noting here");
+												//arrange
+												_fixture.SeedData();
+												//act
+												var deleteActionResult = await _fixture.Controller.Delete(2);
+												//assert
+												Assert.NotNull(deleteActionResult);
+												Assert.IsType<AcceptedResult>(deleteActionResult);
+												//cleanup
+												_fixture.ClearData();
 								}
 
 								[Fact]
-								public void PutTest()
+								public async void PutTest()
 								{
-												Assert.Fail("So far noting here");
+												//arrange
+												_fixture.SeedData();
+												UpdateScriptDTO updateScriptDTO = new UpdateScriptDTO()
+												{
+																Content = "Updated content"
+												};
+												//act
+												var putActionResult = await _fixture.Controller.Put(1, updateScriptDTO);
+												//assert
+												Assert.NotNull(putActionResult);
+												Assert.IsType<AcceptedResult>(putActionResult);
+												//wip
+												//cleanup
+												_fixture.ClearData();
 								}
 				}
 }
