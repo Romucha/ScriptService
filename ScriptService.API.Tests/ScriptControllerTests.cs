@@ -30,7 +30,7 @@ namespace ScriptService.API.Tests
 								public async void GetTest()
 								{
 												//arrange
-
+												_fixture.SeedData();
 												//act
 												var receivedScriptsActionResult = await _fixture.Controller.Get(new RequestParams());
 												var receivedScripts = (receivedScriptsActionResult as OkObjectResult)?.Value as IList<GetScriptDTO>;
@@ -38,19 +38,23 @@ namespace ScriptService.API.Tests
 												Assert.NotNull(receivedScripts);
 												Assert.NotEmpty(receivedScripts);
 												Assert.Equal(_fixture.Scripts.Count, receivedScripts.Count);
+												//cleanup
+												_fixture.ClearData();
 								}
 
 								[Fact]
 								public async void GetByIdTest()
 								{
 												//arrange
-
+												_fixture.SeedData();
 												//act
 												var script1ActionResult = await _fixture.Controller.GetById(1);
 												var script1 = (script1ActionResult as OkObjectResult)?.Value as DetailScriptDTO;
 												//assert
 												Assert.NotNull(script1);
 												Assert.Equal(script1.Content, _fixture.Scripts.FirstOrDefault(c => c.Id == 1).Content);
+												//cleanup
+												_fixture.ClearData();
 
 								}
 
