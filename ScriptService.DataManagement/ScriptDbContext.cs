@@ -19,11 +19,6 @@ namespace ScriptService.DataManagement
 
         public virtual DbSet<Script> Scripts { get; set; }
 
-								protected ScriptDbContext()
-								{
-												
-								}
-
         public ScriptDbContext(IConfiguration configuration, DbContextOptions<ScriptDbContext> dbContextOptions) : base(dbContextOptions)
         {
             this.configuration = configuration;

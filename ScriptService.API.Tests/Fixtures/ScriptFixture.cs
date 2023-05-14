@@ -16,7 +16,7 @@ using ScriptService.DataManagement.Mapping;
 
 namespace ScriptService.API.Tests.Fixtures
 {
-    public class ScriptFixture
+    public class ScriptFixture : IDisposable
     {
         private readonly ScriptDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -36,6 +36,9 @@ namespace ScriptService.API.Tests.Fixtures
         public ScriptsController Controller { get; private set; }
         public ScriptFixture()
         {
+												//configuration
+												var mockConfiguration = new Mock<IConfiguration>();
+												IConfiguration configuration = mockConfiguration.Object;
             //script database
             Scripts = new List<Script>()
 												{
@@ -61,22 +64,26 @@ namespace ScriptService.API.Tests.Fixtures
 																				Content = "Test3"
 																},
 												};
-												var queriableScripts = Scripts.AsQueryable();
-            var mockDbSet = new Mock<DbSet<Script>>();
+												//var queriableScripts = Scripts.AsQueryable();
+            //var mockDbSet = new Mock<DbSet<Script>>();
 
-            mockDbSet.As<IQueryable<Script>>().Setup(m => m.Provider).Returns(queriableScripts.Provider);
-            mockDbSet.As<IQueryable<Script>>().Setup(m => m.Expression).Returns(queriableScripts.Expression);
-            mockDbSet.As<IQueryable<Script>>().Setup(m => m.ElementType).Returns(queriableScripts.ElementType);
-            mockDbSet.As<IQueryable<Script>>().Setup(m => m.GetEnumerator()).Returns(() => queriableScripts.GetEnumerator());
+            //mockDbSet.As<IQueryable<Script>>().Setup(m => m.Provider).Returns(queriableScripts.Provider);
+            //mockDbSet.As<IQueryable<Script>>().Setup(m => m.Expression).Returns(queriableScripts.Expression);
+            //mockDbSet.As<IQueryable<Script>>().Setup(m => m.ElementType).Returns(queriableScripts.ElementType);
+            //mockDbSet.As<IQueryable<Script>>().Setup(m => m.GetEnumerator()).Returns(() => queriableScripts.GetEnumerator());
+												//mockDbSet.As<IAsyncEnumerable<Script>>().Setup(m => m.GetAsyncEnumerator(default)).Returns(() => queriableScripts.AsAsyncEnumerable().GetAsyncEnumerator());
 
-            _scriptsSet = mockDbSet.Object;
+            //_scriptsSet = mockDbSet.Object;
 
-            var mockDbContext = new Mock<ScriptDbContext>();
-            mockDbContext.Setup(c => c.Scripts)
-                         .Returns(_scriptsSet);
-            mockDbContext.Setup(c => c.Set<Script>())
-                         .Returns(_scriptsSet);
-            _dbContext = mockDbContext.Object;
+            //var mockDbContext = new Mock<ScriptDbContext>();
+            //mockDbContext.Setup(c => c.Scripts)
+            //             .Returns(_scriptsSet);
+            //mockDbContext.Setup(c => c.Set<Script>())
+            //             .Returns(_scriptsSet);
+            //_dbContext = mockDbContext.Object;
+
+												DbContextOptionsBuilder<ScriptDbContext> optionsBuilder = new DbContextOptionsBuilder<ScriptDbContext>();
+												_dbContext = new ScriptDbContext(configuration, optionsBuilder.UseInMemoryDatabase("Test script database").Options);
             //logger
             var mockLogger = new Mock<ILogger<ScriptsController>>();
             _logger = mockLogger.Object;
@@ -92,5 +99,11 @@ namespace ScriptService.API.Tests.Fixtures
 
             Controller = new ScriptsController(_logger, _unitOfWork, _mapper);
         }
-    }
+
+								public void Dispose()
+								{
+												_dbContext.Dispose();
+												_unitOfWork.Dispose();
+								}
+				}
 }

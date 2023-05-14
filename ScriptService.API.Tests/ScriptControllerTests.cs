@@ -41,9 +41,17 @@ namespace ScriptService.API.Tests
 								}
 
 								[Fact]
-								public void GetByIdTest()
+								public async void GetByIdTest()
 								{
-												Assert.Fail("So far noting here");
+												//arrange
+
+												//act
+												var script1ActionResult = await _fixture.Controller.GetById(1);
+												var script1 = (script1ActionResult as OkObjectResult)?.Value as DetailScriptDTO;
+												//assert
+												Assert.NotNull(script1);
+												Assert.Equal(script1.Content, _fixture.Scripts.FirstOrDefault(c => c.Id == 1).Content);
+
 								}
 
 								[Fact]
