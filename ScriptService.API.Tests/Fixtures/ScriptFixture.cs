@@ -115,6 +115,7 @@ namespace ScriptService.API.Tests.Fixtures
 												};
 												_dbContext.Scripts.AddRange(Scripts);
 												await _dbContext.SaveChangesAsync();
+												_dbContext.ChangeTracker.Clear();
 								}
 
 								public async void ClearData()
