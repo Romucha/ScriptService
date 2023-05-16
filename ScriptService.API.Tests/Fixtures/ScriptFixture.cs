@@ -13,28 +13,43 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ScriptService.DataManagement.Mapping;
+using System.Configuration;
 
 namespace ScriptService.API.Tests.Fixtures
 {
     public class ScriptFixture : IDisposable
     {
-        private readonly ScriptDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<ScriptsController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+								private readonly IConfiguration _configuration;
 
-        public List<Script> Scripts { get; private set; }
+								private ScriptDbContext _dbContext;
+								private IUnitOfWork _unitOfWork 
+								{ 
+												get 
+												{
+																if (_configuration == null)
+																{
+																				return null;
+																}
+																DbContextOptionsBuilder<ScriptDbContext> optionsBuilder = new DbContextOptionsBuilder<ScriptDbContext>();
+																_dbContext = new ScriptDbContext(_configuration, optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+																return new UnitOfWork(_dbContext);
+												}
+								}
+								private bool disposed = false;
+
+								public List<Script> Scripts { get; private set; }
         public ScriptsController Controller { get; private set; }
         public ScriptFixture()
         {
 												//configuration
 												var mockConfiguration = new Mock<IConfiguration>();
-												IConfiguration configuration = mockConfiguration.Object;
+												_configuration = mockConfiguration.Object;
 												//scripts
 												Scripts = new List<Script>();
             //script database
-            DbContextOptionsBuilder<ScriptDbContext> optionsBuilder = new DbContextOptionsBuilder<ScriptDbContext>();
-												_dbContext = new ScriptDbContext(configuration, optionsBuilder.UseInMemoryDatabase("Test script database").Options);
+            
             //logger
             var mockLogger = new Mock<ILogger<ScriptsController>>();
             _logger = mockLogger.Object;
@@ -46,15 +61,30 @@ namespace ScriptService.API.Tests.Fixtures
             _mapper = mappingConfiguration.CreateMapper();
 
             //manageable data
-            _unitOfWork = new UnitOfWork(_dbContext);
-
             Controller = new ScriptsController(_logger, _unitOfWork, _mapper);
         }
 
+								~ScriptFixture() 
+								{
+												Dispose(false);
+								}
+
+								protected virtual void Dispose(bool disposing)
+								{
+												if (disposed) return;
+												if (disposing)
+												{
+																_dbContext.Dispose();
+																_unitOfWork.Dispose();
+												}
+
+												disposed = true;
+								}
+
 								public void Dispose()
 								{
-												_dbContext.Dispose();
-												_unitOfWork.Dispose();
+												Dispose(true);
+												GC.SuppressFinalize(this);
 								}
 
 								public async void SeedData()
@@ -83,14 +113,15 @@ namespace ScriptService.API.Tests.Fixtures
 																				Content = "Test3"
 																},
 												};
-												await _dbContext.Scripts.AddRangeAsync(Scripts);
+												_dbContext.Scripts.AddRange(Scripts);
 												await _dbContext.SaveChangesAsync();
 								}
 
-								public void ClearData()
+								public async void ClearData()
 								{
 												Scripts.Clear();
 												_dbContext.Scripts.RemoveRange(_dbContext.Scripts);
+												await _dbContext.SaveChangesAsync();
 								}
 				}
 }

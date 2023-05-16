@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json.Linq;
 using ScriptService.API.Controllers;
 using ScriptService.API.Tests.Fixtures;
 using ScriptService.DataManagement;
@@ -21,9 +22,9 @@ namespace ScriptService.API.Tests
 				public class ScriptControllerTests
 				{
 								private readonly ScriptFixture _fixture;
-        public ScriptControllerTests(ScriptFixture fixture)
+        public ScriptControllerTests()
         {
-												_fixture = fixture;
+												_fixture = new ScriptFixture();
         }
 
         [Fact]
@@ -101,11 +102,15 @@ namespace ScriptService.API.Tests
 												{
 																Content = "Updated content"
 												};
+												int scriptId = 3;
 												//act
-												var putActionResult = await _fixture.Controller.Put(1, updateScriptDTO);
+												var putActionResult = await _fixture.Controller.Put(scriptId, updateScriptDTO);
+												var updatedScript = (await _fixture.Controller.GetById(scriptId) as OkObjectResult)?.Value as DetailScriptDTO;
 												//assert
 												Assert.NotNull(putActionResult);
+												Assert.NotNull(updatedScript);
 												Assert.IsType<AcceptedResult>(putActionResult);
+												Assert.Equal(updateScriptDTO.Content, updatedScript.Content);
 												//wip
 												//cleanup
 												_fixture.ClearData();
