@@ -1,4 +1,7 @@
-﻿using ScriptService.API.Tests.Fixtures;
+﻿using Microsoft.AspNetCore.Mvc;
+using ScriptService.API.Tests.Fixtures;
+using ScriptService.Models.Data;
+using ScriptService.Models.DTO.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +18,23 @@ namespace ScriptService.API.Tests
 												accountFixture = new AccountFixture();
 								}
 								[Fact]
-								public void RegisterTest()
+								public async void RegisterTest()
 								{
-												Assert.Fail("So far nothing here");
+												//arrange
+												RegisterUserDTO registerUserDTO = new RegisterUserDTO()
+												{
+																Email = "user@test.com",
+																PhoneNumber = "1234567890",
+																Password = "Pa$$w0rd",
+																ConfirmPassword = "Pa$$w0rd",
+																Roles = new List<string>() { "User" }
+												};
+
+												//act
+												var registerResult = await accountFixture.AccountController.Register(registerUserDTO);
+												//assert
+												Assert.NotNull(registerResult);
+												Assert.IsType<AcceptedResult>(registerResult);
 								}
 
 								[Fact]
