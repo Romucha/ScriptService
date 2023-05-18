@@ -31,7 +31,7 @@ namespace ScriptService.API.Tests
 								public async void GetTest()
 								{
 												//arrange
-												_fixture.SeedData();
+												_fixture.Seed();
 												//act
 												var receivedScriptsActionResult = await _fixture.Controller.Get(new RequestParams());
 												var receivedScripts = (receivedScriptsActionResult as OkObjectResult)?.Value as IList<GetScriptDTO>;
@@ -47,7 +47,7 @@ namespace ScriptService.API.Tests
 								public async void GetByIdTest()
 								{
 												//arrange
-												_fixture.SeedData();
+												_fixture.Seed();
 												//act
 												var script1ActionResult = await _fixture.Controller.GetById(1);
 												var script1 = (script1ActionResult as OkObjectResult)?.Value as DetailScriptDTO;
@@ -63,7 +63,7 @@ namespace ScriptService.API.Tests
 								public async void PostTest()
 								{
 												//arrange
-												_fixture.SeedData();
+												_fixture.Seed();
 												CreateScriptDTO createScriptDTO = new CreateScriptDTO()
 												{
 																Name = "Test4",
@@ -83,7 +83,7 @@ namespace ScriptService.API.Tests
 								public async void DeleteTest()
 								{
 												//arrange
-												_fixture.SeedData();
+												_fixture.Seed();
 												//act
 												var deleteActionResult = await _fixture.Controller.Delete(2);
 												//assert
@@ -97,7 +97,7 @@ namespace ScriptService.API.Tests
 								public async void PutTest()
 								{
 												//arrange
-												_fixture.SeedData();
+												_fixture.Seed();
 												UpdateScriptDTO updateScriptDTO = new UpdateScriptDTO()
 												{
 																Content = "Updated content"

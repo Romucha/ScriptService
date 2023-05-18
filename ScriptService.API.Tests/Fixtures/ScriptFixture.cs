@@ -87,7 +87,7 @@ namespace ScriptService.API.Tests.Fixtures
 												GC.SuppressFinalize(this);
 								}
 
-								public async void SeedData()
+								public async void Seed()
 								{
 												Scripts = new List<Script>()
 												{

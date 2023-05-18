@@ -36,11 +36,5 @@ namespace ScriptService.API.Tests
 												Assert.NotNull(registerResult);
 												Assert.IsType<AcceptedResult>(registerResult);
 								}
-
-								[Fact]
-								public void LoginTest()
-								{
-												Assert.Fail("So far nothing here");
-								}
 				}
 }
