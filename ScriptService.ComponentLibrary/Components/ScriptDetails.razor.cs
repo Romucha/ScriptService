@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using ScriptService.ComponentLibrary.Services;
 using ScriptService.Models.Data;
+using ScriptService.Models.DTO;
+using ScriptService.Models.DTO.Script;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,21 +24,29 @@ namespace ScriptService.ComponentLibrary.Components
 								[Inject]
 								private ILocalStorageService localStorageService { get; set; }
 
-								private Script _script { get; set; }
+								private DetailScriptDTO _script { get; set; }
 
 								[ParameterAttribute]
-								public int Id { get; set; }
+								public int? id { get; set; }
 
 								protected override async Task OnInitializedAsync()
 								{
-												_script = Id > 0 ? JsonSerializer.Deserialize<Script>(JsonSerializer.Serialize(await _scriptManagementService.GetScriptByIdAsync(Id))) : new Script();
+												if (id == null)
+												{
+																_script = new DetailScriptDTO();
+												}
+												else
+												{
+																int _id = (int)id;
+																_script = JsonSerializer.Deserialize<DetailScriptDTO>(JsonSerializer.Serialize(await _scriptManagementService.GetScriptByIdAsync(_id)));
+												}
 								}
 
 								private async void OnSubmit()
 								{
 												if (_script != null)
 												{
-																if (Id > 0)
+																if (id > 0)
 																{
 																				await _scriptManagementService.UpdateScriptAsync(_script, await localStorageService.GetItemAsStringAsync("jwttoken"));
 																}

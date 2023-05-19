@@ -16,8 +16,8 @@ namespace ScriptService.ComponentLibrary.Services
 
 								Task DeleteScriptAsync(int id, string token);
 
-								Task<Script> AddScriptAsync(Script script, string token);
+								Task<DetailScriptDTO> AddScriptAsync(DetailScriptDTO script, string token);
 
-								Task UpdateScriptAsync(Script script, string token);
+								Task UpdateScriptAsync(DetailScriptDTO script, string token);
 				}
 }

@@ -17,7 +17,7 @@ namespace ScriptService.DataManagement
 
         private readonly DbContextOptions<ScriptDbContext> dbContextOptions;
 
-        public DbSet<Script> Scripts { get; set; }
+        public virtual DbSet<Script> Scripts { get; set; }
 
         public ScriptDbContext(IConfiguration configuration, DbContextOptions<ScriptDbContext> dbContextOptions) : base(dbContextOptions)
         {

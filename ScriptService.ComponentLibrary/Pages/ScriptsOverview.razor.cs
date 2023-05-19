@@ -30,9 +30,9 @@ namespace ScriptService.ComponentLibrary.Pages
             Scripts = await _scriptManagementService.GetAllScriptsAsync();
         }
 
-        private async void ScriptClick(GetScriptDTO script)
+        private void ScriptClick(GetScriptDTO script)
         {
-            _navigationManager.NavigateTo($"/scripts/{script.Id}");
+            _navigationManager.NavigateTo($"/scripts/details/{script.Id}");
         }
 
         private async Task DeleteScriptAsync(GetScriptDTO script)
@@ -43,7 +43,7 @@ namespace ScriptService.ComponentLibrary.Pages
 
         private void AddScript()
         {
-												_navigationManager.NavigateTo($"/scripts/0");
+												_navigationManager.NavigateTo($"/scripts/details");
 								}
     }
 }

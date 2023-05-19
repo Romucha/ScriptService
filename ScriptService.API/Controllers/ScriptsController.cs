@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog.Filters;
 using ScriptService.DataManagement;
 using ScriptService.DataManagement.Repository;
 using ScriptService.Models.Data;
@@ -31,9 +32,10 @@ namespace ScriptService.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string? filter = null)
-        {
-            var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
+        public async Task<IActionResult> Get([FromQuery]RequestParams requestParams, string filter = null)
+								{
+												_logger.LogInformation($"Attempt to get a set of scripts");
+												var scripts = await _unitOfWork.Scripts.GetAll(requestParams, x => string.IsNullOrEmpty(filter) ? 
             true 
             : 
             x.Content.ToLower().IndexOf(filter.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0
@@ -50,7 +52,8 @@ namespace ScriptService.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
-            var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+												_logger.LogInformation($"Attempt to get the script with id: {id}");
+												var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
             var result = _mapper.Map<DetailScriptDTO>(script);
 
             return Ok(result);
@@ -65,7 +68,8 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var script = _mapper.Map<Script>(createScriptDTO);
+																_logger.LogInformation($"Attempt to add a new script");
+																var script = _mapper.Map<Script>(createScriptDTO);
                 script.CreatedAt = DateTime.UtcNow;
                 script.UpdatedAt = DateTime.UtcNow;
                 await _unitOfWork.Scripts.Insert(script);
@@ -88,10 +92,11 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid && id > 0) 
             {
-                var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+																_logger.LogInformation($"Attempt to add delete the script with id: {id}");
+																var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
                 if (script == null)
                 {
-                    _logger.LogError($"script with id {id} does not exist");
+                    _logger.LogError($"Script with id {id} does not exist");
                     return NotFound(id);
                 }
                 else
@@ -118,7 +123,8 @@ namespace ScriptService.API.Controllers
         {
             if (ModelState.IsValid && id > 0)
             {
-                var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
+																_logger.LogInformation($"Attempt to add change the script with id: {id}");
+																var script = await _unitOfWork.Scripts.Get(x => x.Id == id);
                 if (script == null)
                 {
                     _logger.LogError($"script with id {id} does not exist");

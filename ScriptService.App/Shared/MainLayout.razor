@@ -7,33 +7,41 @@
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
-<MudLayout>
-    <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        @if (stateProvider.CurrentUser != null && stateProvider.CurrentUser.IsAuthenticated)
-								{
-												<MudText Align="@Align.Right">Hello, @stateProvider.CurrentUser.Email!</MudText>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@logout">
-																Logout
-												</MudButton>
-								}
-								else
-								{
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@login">
-																Login
-												</MudButton>
-												<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@register">
-																Register
-												</MudButton>
-								}
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
-    </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
-</MudLayout>
+<ErrorBoundary @ref="errorBoundary">
+					<ChildContent>
+								<MudLayout>
+												<MudAppBar>
+																<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+																@if (stateProvider.CurrentUser != null && stateProvider.CurrentUser.IsAuthenticated)
+																{
+																				<MudText Align="@Align.Right">Hello, @stateProvider.CurrentUser.Email!</MudText>
+																				<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@logout">
+																								Logout
+																				</MudButton>
+																}
+																else
+																{
+																				<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@login">
+																								Login
+																				</MudButton>
+																				<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@register">
+																								Register
+																				</MudButton>
+																}
+												</MudAppBar>
+												<MudDrawer @bind-Open="@_drawerOpen">
+																<NavMenu/>
+												</MudDrawer>
+												<MudMainContent>
+																@Body
+												</MudMainContent>
+								</MudLayout>
+				</ChildContent>
+				<ErrorContent>
+								<MudText>Something went wrong.</MudText>
+								<MudButton OnClick="Recover">Reload</MudButton>
+				</ErrorContent>
+</ErrorBoundary>
 @code {
     bool _drawerOpen = true;
 
@@ -58,4 +66,11 @@
 				{
 								await stateProvider.Logout();
 				}
+
+				protected ErrorBoundary errorBoundary = default!;
+
+    protected void Recover() 
+    {
+        errorBoundary?.Recover();
+    }
 }
